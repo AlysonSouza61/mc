@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.header("ZARAPLAST - Departamento: Assistência Técnica teste")
+st.header("ZARAPLAST - Departamento: Assistência Técnica")
 st.markdown("---")
 
 # Função para conectar ao MySQL e buscar dados
