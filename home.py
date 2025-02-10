@@ -61,7 +61,7 @@ if uploaded_file:
     df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
     
     # Menu lateral para filtros
-    #st.sidebar.image("logo.png")
+    st.sidebar.image("logo.png")
     st.sidebar.header("Filtros")
     # Adiciona o texto no final da sidebar
     st.sidebar.markdown(
