@@ -160,7 +160,7 @@ if uploaded_file:
         st.metric(label="Média MC", value=media_mc)
 
     with col4:
-        st.metric(label="SValor acumulado de MC", value=soma_medias_mc_formatado)
+        st.metric(label="Valor acumulado de MC", value=soma_medias_mc_formatado)
 
     
     # Gráfico
