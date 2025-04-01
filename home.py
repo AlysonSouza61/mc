@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.header("ZARAPLAST - Departamento: Assistência Técnica teste")
+st.header("ZARAPLAST - Departamento: Assistência Técnica")
 st.markdown("---")
 
 # Função para conectar ao MySQL e buscar dados
@@ -56,7 +56,7 @@ if uploaded_file:
                         else row['Qtde Devolvida'] / row['Qtde Reclamada'] if row['Qtde Reclamada'] != 0
                         else 0, axis=1)
     df['NPS'] = df['SD'] * df['NCA'] * df['SN']
-    df['MC'] = 2000 * df['NPS']
+    df['MC'] = 3000 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
     
