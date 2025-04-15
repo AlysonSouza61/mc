@@ -35,7 +35,7 @@ def get_mysql_data(query):
 # Buscar dados do banco
 tecnico = pd.DataFrame(get_mysql_data('SELECT * FROM tecnico'), columns=["id", "Nome"])
 df3 = pd.DataFrame(get_mysql_data('SELECT * FROM NCA'), columns=["id", "Cliente", "Peso"])
-df2 = pd.DataFrame(get_mysql_data('SELECT * FROM sd'), columns=["id", "Desvios", "Peso"])
+df2 = pd.DataFrame(get_mysql_data('SELECT * FROM sd'), columns=["id", "Desvios Abreviados", "Desvios", "Peso"])
 
 # Upload do arquivo
 uploaded_file = st.file_uploader("Selecione um arquivo CSV ou XLSM", type=["csv", "xlsm", "xlsx"])
