@@ -69,7 +69,7 @@ if uploaded_file:
             <div style="position: fixed; bottom: 9px; width: 100%; text-align: left; font-size: 9px; color: gray;">
                 <p>Desenvolvedor: Alyson Anapaz</p>
                 <p>Departamento: Assistência Técnica</p>
-                <p>Versão do Software: 1.0</p>
+                <p>Versão do Software: 2.0</p>
             </div>
             """,
             unsafe_allow_html=True
