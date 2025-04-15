@@ -201,7 +201,7 @@ if uploaded_file:
     df_grouped_iniciado['MC_formatted'] = df_grouped_iniciado['MC'].apply(lambda x: f'R${x:,.2f}')
 
     # Inicializando o app Dash
-    app = dash.Dash(__name2__)
+    app = dash.Dash(__name__)
 
     # Criando o gráfico com rótulos de dados
     fig = px.bar(df_grouped_iniciado, x='Iniciador', y='MC', title='Acumulado do MC por Iniciador')
