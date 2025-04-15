@@ -157,10 +157,10 @@ if uploaded_file:
         st.metric(label="Média NPS", value=media_nps)
 
     with col3:
-        st.metric(label="Média MC", value=media_mc)
+        st.metric(label="Média MC Por técnico", value=media_mc)
 
     with col4:
-        st.metric(label="Valor acumulado de MC", value=soma_medias_mc_formatado)
+        st.metric(label="Média Por Mês de MC", value=soma_medias_mc_formatado)
 
     
     # Gráfico
