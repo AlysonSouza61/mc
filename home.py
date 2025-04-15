@@ -221,6 +221,3 @@ if uploaded_file:
     )
     st.title("Média do SN por Desvio")
     st.plotly_chart(fig)
-        
-    # Exibir dataframe filtrado
-    st.dataframe(df)
