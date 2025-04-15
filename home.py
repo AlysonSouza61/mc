@@ -196,7 +196,7 @@ if uploaded_file:
 
     # Gráfico 2
 
-    df_grouped_iniciado = df.groupby("Descrição Defeito")["SN"].sum().reset_index()
+    df_grouped_iniciado = df.groupby("Descrição Defeito")["SN"].mean().reset_index()
 
     df_grouped_iniciado = df_grouped_iniciado.sort_values(by="SN", ascending=False)
 
