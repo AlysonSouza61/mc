@@ -58,7 +58,7 @@ if uploaded_file:
     df['NPS'] = df['SD'] * df['NCA'] * df['SN']
     df['MC'] = 3000 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
-    df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
+    #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
     
     # Menu lateral para filtros
     st.sidebar.image("logo.png")
