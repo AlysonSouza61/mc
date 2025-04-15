@@ -210,7 +210,7 @@ if uploaded_file:
     fig = px.bar(df_grouped_iniciado, x='Descrição Defeito', y='SN', title='Média do SN por Desvio')
 
     # Adicionando rótulos de dados no gráfico com formatação de moeda BR
-    fig.update_traces(text=df_grouped_iniciado['SN'], textposition='outside')
+    fig.update_traces(text=df_grouped_iniciado['SN'].round(2), textposition='outside')
 
     # Configuração do Streamlit
     # Ajustando o layout (tamanho do gráfico)
