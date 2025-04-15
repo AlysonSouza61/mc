@@ -193,3 +193,34 @@ if uploaded_file:
         
     # Exibir dataframe filtrado
     st.dataframe(df)
+
+    # Gráfico 2
+
+    df_grouped_iniciado = df.groupby("Descrição Defeito")["SN"].mean().reset_index()
+
+    df_grouped_iniciado = df_grouped_iniciado.sort_values(by="SN", ascending=False)
+
+    # Formatar os valores de MC como moeda BR (R$)
+    #df_grouped_iniciado['MC_formatted'] = df_grouped_iniciado['MC'].apply(lambda x: f'R${x:,.2f}')
+
+    # Inicializando o app Dash
+    app = dash.Dash(__name__)
+
+    # Criando o gráfico com rótulos de dados
+    fig = px.bar(df_grouped_iniciado, x='Descrição Defeito', y='SN', title='Média do SN por Desvio')
+
+    # Adicionando rótulos de dados no gráfico com formatação de moeda BR
+    fig.update_traces(text=df_grouped_iniciado['SN'], textposition='outside')
+
+    # Configuração do Streamlit
+    # Ajustando o layout (tamanho do gráfico)
+    fig.update_layout(
+        width=1000,  # Largura do gráfico
+        height=600,  # Altura do gráfico
+        margin=dict(t=50, b=100, l=50, r=50),  # Margens para evitar corte
+    )
+    st.title("Média do SN por Desvio")
+    st.plotly_chart(fig)
+        
+    # Exibir dataframe filtrado
+    st.dataframe(df)
