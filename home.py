@@ -47,8 +47,11 @@ if uploaded_file:
     else:
         df = pd.read_excel(uploaded_file, sheet_name='Dados Gerais RAC - Atualizado')
 
-    # Remove linhas com "Material De Teste" na coluna 'Descrição Defeito'
-    df = df[df['Descrição Defeito'].fillna('').str.strip().str.lower() != "material de teste", "Devolução Comercial"]
+        # Lista de descrições de defeito a excluir
+    defeitos_excluidos = ["Material De Teste", "Devolução Comercial"]
+    
+    # Filtra removendo essas descrições da coluna
+    df = df[~df['Descrição Defeito'].fillna('').str.strip().str.lower().isin([d.lower() for d in defeitos_excluidos])]
     
     # Processamento dos dados
     df['SD'] = df['Sigla Defeito'].map(df2.set_index('Desvios')['Peso']).fillna(0)
