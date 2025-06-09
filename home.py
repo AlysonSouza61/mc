@@ -82,10 +82,22 @@ if uploaded_file:
         default=["Todos"]
     )
 
-    # Filtro de Nome do Técnico (Múltipla escolha)
+   # Lista de técnicos a excluir
+    tecnicos_excluidos = ["LARISSA PASQUOTO RODRIGUES"]
+    
+    # Gera a lista de técnicos sem os nomes excluídos
+    tecnicos_disponiveis = sorted([
+        nome for nome in df['Iniciador'].dropna().unique().tolist()
+        if nome not in tecnicos_excluidos
+    ])
+    
+    # Adiciona a opção "Todos"
+    opcoes_filtro = ["Todos"] + tecnicos_disponiveis
+    
+    # Filtro de múltipla escolha
     tecnicos_selecionados = st.sidebar.multiselect(
-        "Nome do Técnico", 
-        options=["Todos"] + sorted(df['Iniciador'].dropna().unique().tolist()), 
+        "Nome do Técnico",
+        options=opcoes_filtro,
         default=["Todos"]
     )
 
