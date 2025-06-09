@@ -62,7 +62,7 @@ if uploaded_file:
                         else row['Qtde Devolvida'] / row['Qtde Reclamada'] if row['Qtde Reclamada'] != 0
                         else 0, axis=1)
     df['NPS'] = 3000 - df['SD'] * df['NCA'] * 4.5 * df['SN']
-    df['MC'] = 3000 * df['NPS']
+    df['MC'] = df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
     
