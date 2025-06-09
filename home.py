@@ -83,7 +83,7 @@ if uploaded_file:
     )
 
         # Lista de técnicos a excluir da seleção padrão (mas ainda aparecem na lista do filtro)
-    tecnicos_excluidos = ["LARISSA PASQUOTO RODRIGUES"]
+    tecnicos_excluidos = ["LARISSA PASQUOTO RODRIGUES", "LAIRA ROBERTA SOUZA LOPES"]
     
     # Lista de todos técnicos disponíveis (inclusive os que serão excluídos da seleção)
     tecnicos_disponiveis = sorted(df['Iniciador'].dropna().unique().tolist())
