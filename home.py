@@ -82,28 +82,27 @@ if uploaded_file:
         default=["Todos"]
     )
 
-      # Lista de técnicos a excluir (não aparecerão no filtro nem nos dados)
-    tecnicos_excluidos = ["LARISSA PASQUOTO RODRIGUES"]
+        # Lista de técnicos a excluir da seleção padrão (mas ainda aparecem na lista do filtro)
+    tecnicos_excluidos = ["João Silva", "Maria Souza", "Carlos Lima"]
     
-    # Filtra o DataFrame original para remover os técnicos indesejados
-    df_filtrado = df[~df['Iniciador'].isin(tecnicos_excluidos)].copy()
+    # Lista de todos técnicos disponíveis (inclusive os que serão excluídos da seleção)
+    tecnicos_disponiveis = sorted(df['Iniciador'].dropna().unique().tolist())
     
-    # Gera lista de técnicos válidos
-    tecnicos_disponiveis = sorted(df_filtrado['Iniciador'].dropna().unique().tolist())
+    # Define os técnicos que estarão selecionados por padrão (todos menos os excluídos)
+    tecnicos_selecionados_default = [
+        nome for nome in tecnicos_disponiveis if nome not in tecnicos_excluidos
+    ]
     
-    # Adiciona "Todos"
-    opcoes_filtro = ["Todos"] + tecnicos_disponiveis
-    
-    # Filtro lateral
+    # Multiselect com os técnicos, com default já sem os excluídos
     tecnicos_selecionados = st.sidebar.multiselect(
         "Nome do Técnico",
-        options=opcoes_filtro,
-        default=["Todos"]
+        options=tecnicos_disponiveis,
+        default=tecnicos_selecionados_default
     )
     
-    # Aplica o filtro selecionado
-    if "Todos" not in tecnicos_selecionados:
-        df_filtrado = df_filtrado[df_filtrado['Iniciador'].isin(tecnicos_selecionados)]
+    # Aplica o filtro aos dados com base na seleção
+    df_filtrado = df[df['Iniciador'].isin(tecnicos_selecionados)]
+
 
     # Filtro de Período (Data de Abertura)
     st.sidebar.subheader("Filtrar por Período (Data de Abertura)")
