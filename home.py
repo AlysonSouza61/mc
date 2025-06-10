@@ -65,7 +65,7 @@ if uploaded_file:
     # Fator 2: (df['SN'] * 0.2 + 0.8)
     # Fator 3: (df['SN'] * 0.05 + 0.95)
     # Fator 4: (df['SN'] * 0.01 + 0.99)
-    # Fator 5: (df['SN'] * 0.01 + 0.99)
+    # Fator 5: (df['SN'] * 0.005 + 0.995)
     df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.005 + 0.995)
     df['MC'] = 3000 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
