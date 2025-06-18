@@ -51,7 +51,6 @@ if uploaded_file:
     defeitos_excluidos = ["Material De Teste", "Devolução Comercial", "Atraso na entrega", "Material Molhado", "Pedido Divergente", "Sentido De Embobinameto"]
     
     # Filtra removendo essas descrições da coluna
-    # & (df['Qtde Reclamada'].fillna(0) >= 0)
     df = df[~df['Descrição Defeito'].fillna('').str.strip().str.lower().isin([d.lower() for d in defeitos_excluidos]) & (df['Qtde Reclamada'].fillna(0) >= 0)]
     
     # Processamento dos dados
