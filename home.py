@@ -171,7 +171,7 @@ if uploaded_file:
     media_nps = f"{media_nps:.2f}"
     media_mc = f"R${media_mc:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     soma_medias_mc_formatado = f"R${soma_medias_mc:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    teste = soma_medias_mc * 0.8
+    teste = f"R${soma_medias_mc * 0.8:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
     # Layout do Streamlit
     st.title("Dashboard de Métricas")
