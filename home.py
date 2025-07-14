@@ -190,7 +190,7 @@ if uploaded_file:
 
     with col4:
         st.metric(label="Média Por Mês de MC", value=soma_medias_mc_formatado)
-        st.metric(label="teste", value=teste)
+        st.metric(label="80%", value=teste)
     # Gráfico
 
     df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
