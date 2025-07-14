@@ -67,7 +67,7 @@ if uploaded_file:
     # Fator 4: (df['SN'] * 0.01 + 0.99)
     # Fator 5: (df['SN'] * 0.005 + 0.995)
     df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.7 + 0.3)
-    df['MC'] = 2000 * df['NPS']
+    df['MC'] = 3000 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
     
