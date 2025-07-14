@@ -156,7 +156,7 @@ if uploaded_file:
     # Calcular as médias
     media_sn = df["SN"].mean()
     media_nps = df["NPS"].mean()
-    media_mc = df["MC"].mean()
+    media_mc = df["MC"].mean() +100
 
     # Agrupar os dados pela coluna "Iniciador" e calcular a média da coluna "MC"
     df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
