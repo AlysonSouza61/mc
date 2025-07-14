@@ -189,8 +189,6 @@ if uploaded_file:
 
     with col4:
         st.metric(label="Média Por Mês de MC", value=soma_medias_mc_formatado)
-
-    with col5:
         st.metric(label="teste", value=teste)
     # Gráfico
 
