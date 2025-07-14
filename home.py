@@ -156,7 +156,8 @@ if uploaded_file:
     # Calcular as médias
     media_sn = df["SN"].mean()
     media_nps = df["NPS"].mean()
-    media_mc = df["MC"].mean() +100
+    media_mc = df["MC"].mean()
+    
 
     # Agrupar os dados pela coluna "Iniciador" e calcular a média da coluna "MC"
     df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
@@ -169,6 +170,7 @@ if uploaded_file:
     media_nps = f"{media_nps:.2f}"
     media_mc = f"R${media_mc:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     soma_medias_mc_formatado = f"R${soma_medias_mc:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    teste = soma_medias_mc_formatado
 
     # Layout do Streamlit
     st.title("Dashboard de Métricas")
@@ -188,7 +190,8 @@ if uploaded_file:
     with col4:
         st.metric(label="Média Por Mês de MC", value=soma_medias_mc_formatado)
 
-    
+    with col5:
+        st.metric(label="teste", value=teste)
     # Gráfico
 
     df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
