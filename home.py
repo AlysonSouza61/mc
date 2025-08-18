@@ -190,7 +190,7 @@ if uploaded_file:
         st.metric(label="Média MC Por técnico", value=media_mc)
 
     with col4:
-        st.metric(label="Média Por Mês de MC", value=soma_medias_mc_formatado)
+        st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
         st.metric(label="80%", value=teste)
         st.metric(label="20%", value=PA)
     # Gráfico
@@ -251,6 +251,7 @@ if uploaded_file:
     )
     st.title("Média do SN por Desvio")
     st.plotly_chart(fig)
+
 
 
 
