@@ -165,14 +165,6 @@ if uploaded_file:
 
     # Calcular a soma das médias de MC por Iniciador
     soma_medias_mc = df_grouped_iniciado["MC"].sum()
-    
-    # Verifica se é uma lista/tupla/array para pegar o tamanho
-    if isinstance(soma_medias_mc, (list, tuple)):
-        n = len(soma_medias_mc)
-    else:
-        n = 1  # se for um único número
-    
-    st.write(f"Tamanho de soma_medias_mc: {n}")
 
     # Formatar os valores
     media_sn = f"{media_sn:.2f}"
@@ -201,6 +193,15 @@ if uploaded_file:
         st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
         st.metric(label="80%", value=teste)
         st.metric(label="20%", value=PA_20)
+
+    # Verifica se é uma lista/tupla/array para pegar o tamanho
+    if isinstance(MC, (list, tuple)):
+        n = len(soma_medias_mc)
+    else:
+        n = 1  # se for um único número
+    
+    st.write(f"Tamanho de soma_medias_mc: {n}")
+    
     # Gráfico
 
     df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
@@ -328,6 +329,7 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
