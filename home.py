@@ -242,7 +242,7 @@ def dividir_progressao(total, n):
 total_pa = round(soma_medias_mc * 0.2, 2)
 n_alvo = len(df_grouped_iniciado)
 st.write("N = ", len(df_grouped_iniciado))
-st.write"Média dos 80% = ",(round(soma_medias_mc * 0.8 / n_alvo, 2))
+st.write("Média dos 80% = ",(round(soma_medias_mc * 0.8 / n_alvo, 2))
 
 # Média de MC por Iniciador
 df_mc_iniciador = df.groupby("Iniciador")["MC"].mean().reset_index()
@@ -324,6 +324,7 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
