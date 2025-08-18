@@ -286,11 +286,7 @@ else:
     st.title("MC + Progressão por Iniciador (Ordem Corrigida)")
     st.plotly_chart(fig)
 
-    # Tabela com os valores combinados
-    st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
-
-
-        # Criar variável fixa
+     # Criar variável fixa
     md = 500
 
     # Somar MD + Progressão (PA)
@@ -326,6 +322,12 @@ else:
 
     # Mostrar tabela
     st.dataframe(df_mc_pa)
+    
+    # Tabela com os valores combinados
+    st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
+
+
 
 
 
