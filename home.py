@@ -237,8 +237,8 @@ def dividir_progressao(total, n):
     return valores
 
 # Parâmetros da PA
-total_pa = 1233
-n_alvo = 10
+total_pa = 1000
+n_alvo = 11
 
 # Média de MC por Iniciador
 df_mc_iniciador = df.groupby("Iniciador")["MC"].mean().reset_index()
@@ -288,6 +288,7 @@ else:
 
     # Tabela com os valores combinados
     st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
