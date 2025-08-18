@@ -289,6 +289,39 @@ else:
     # Tabela com os valores combinados
     st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
+        # ======================
+    # NOVO GRÁFICO (MD + PA)
+    # ======================
+    md = 500  # valor fixo
+
+    # Cria uma cópia para não afetar o gráfico anterior
+    df_md_pa = df_mc_sorted.copy()
+
+    # Substitui MC pela soma de md + PA
+    df_md_pa["MC"] = md + df_md_pa["PA"]
+
+    # Ordena decrescente para exibição
+    df_md_pa_plot = df_md_pa.sort_values(by="MC", ascending=False).reset_index(drop=True)
+
+    # Formata rótulos
+    df_md_pa_plot["MC_formatted"] = df_md_pa_plot["MC"].apply(lambda x: f'R${x:,.2f}')
+
+    # Gráfico
+    fig2 = px.bar(df_md_pa_plot, x="Iniciador", y="MC", title="MD + Progressão por Iniciador")
+
+    fig2.update_traces(text=df_md_pa_plot["MC_formatted"], textposition="outside")
+    fig2.update_layout(
+        xaxis={"categoryorder": "array", "categoryarray": df_md_pa_plot["Iniciador"].tolist()},
+        width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
+    )
+
+    st.title("MD + Progressão por Iniciador")
+    st.plotly_chart(fig2)
+
+    # Exibe a tabela com os valores do novo gráfico
+    st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
+
 
 
 
