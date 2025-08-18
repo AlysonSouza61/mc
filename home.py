@@ -194,13 +194,8 @@ if uploaded_file:
         st.metric(label="80%", value=teste)
         st.metric(label="20%", value=PA_20)
 
-    # Verifica se é uma lista/tupla/array para pegar o tamanho
-    if isinstance(MC, (list, tuple)):
-        n = len(soma_medias_mc)
-    else:
-        n = 1  # se for um único número
-    
-    st.write(f"Tamanho de soma_medias_mc: {n}")
+    # Exibir o tamanho do dicionário no app
+    st.write("N = ", len(MC))
     
     # Gráfico
 
@@ -329,6 +324,7 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
