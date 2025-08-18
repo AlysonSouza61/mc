@@ -204,7 +204,9 @@ if uploaded_file:
 
     # Inicializando o app Dash
     app = dash.Dash(__name__)
-
+    
+    st.title("Iniciador")
+    
     # Criando o gráfico com rótulos de dados
     fig = px.bar(df_grouped_iniciado, x='Iniciador', y='MC', title='Média do MC por Iniciador')
 
@@ -251,4 +253,5 @@ if uploaded_file:
     )
     st.title("Média do SN por Desvio")
     st.plotly_chart(fig)
+
 
