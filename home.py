@@ -224,64 +224,72 @@ if uploaded_file:
     # Exibir dataframe filtrado
     st.dataframe(df)
 
-    # ======================
-    # NOVO GRÁFICO (MC + Progressão)
-    # ======================
+ # ======================
+# NOVO GRÁFICO (MC + Progressão) — ORDEM CORRIGIDA
+# ======================
 
-    # --- Preparar Progressão Aritmética ---
-    def dividir_progressao(total, n):
-        a1 = 50  # primeiro termo fixo
-        d = (2 * total / n - 2 * a1) / (n - 1)
-        valores = [round(a1 + i * d, 2) for i in range(n)]
-        diferenca = round(total - sum(valores), 2)
-        valores[-1] += diferenca
-        return valores
+def dividir_progressao(total, n):
+    a1 = 50.0  # primeiro termo fixo
+    d = (2 * total / n - 2 * a1) / (n - 1)
+    valores = [round(a1 + i * d, 2) for i in range(n)]
+    diferenca = round(total - sum(valores), 2)
+    valores[-1] += diferenca
+    return valores
 
-    total = 1000
-    n = 11
-    valores_pa = dividir_progressao(total, n)
+# Parâmetros da PA
+total_pa = 1233
+n_alvo = 10
 
-    # Ordenar MC e valores da progressão
-    df_grouped_iniciado_mc = df.groupby("Iniciador")["MC"].mean().reset_index()
-    df_grouped_iniciado_mc = df_grouped_iniciado_mc.sort_values(by="MC", ascending=False).head(n)
+# Média de MC por Iniciador
+df_mc_iniciador = df.groupby("Iniciador")["MC"].mean().reset_index()
 
-    MC_sorted = sorted(df_grouped_iniciado_mc["MC"].tolist())
-    valores_sorted = sorted(valores_pa)
+if df_mc_iniciador.empty:
+    st.warning("Sem dados após os filtros para calcular o gráfico MC + Progressão.")
+else:
+    # Ajusta n ao número de iniciadores disponíveis
+    n = min(n_alvo, len(df_mc_iniciador))
 
-        # Somar MC + Progressão com iniciadores corretos
-    df_temp = pd.DataFrame({
-        "Iniciador": df_grouped_iniciado_mc["Iniciador"].tolist(),
-        "MC_original": MC_sorted,
-        "PA": valores_sorted
-    })
+    # Gera a PA e ordena crescente (menor com menor)
+    pa_vals = dividir_progressao(total_pa, n)
+    pa_vals_sorted = sorted(pa_vals)  # crescente
 
-    df_temp["MC"] = df_temp["MC_original"] + df_temp["PA"]
-
-    # Ordenar decrescente pela soma
-    df_mc_pa = df_temp.sort_values(by="MC", ascending=False)
-
-    # Formatar MC
-    df_mc_pa["MC_formatted"] = df_mc_pa["MC"].apply(lambda x: f'R${x:,.2f}')
-
-    # Criar gráfico
-    fig = px.bar(df_mc_pa, x="Iniciador", y="MC", title="MC + Progressão por Iniciador")
-
-    # Adicionar rótulos
-    fig.update_traces(text=df_mc_pa["MC_formatted"], textposition="outside")
-
-    # Forçar ordenação do eixo x para seguir a ordem decrescente de MC
-    fig.update_layout(
-        xaxis={'categoryorder':'array', 'categoryarray':df_mc_pa["Iniciador"].tolist()},
-        width=1000,
-        height=600,
-        margin=dict(t=50, b=100, l=50, r=50),
+    # Ordena MC crescente e pega os n menores (mantém os Iniciadores correspondentes)
+    df_mc_sorted = (
+        df_mc_iniciador
+        .sort_values(by="MC", ascending=True)
+        .head(n)
+        .reset_index(drop=True)
     )
 
-    st.title("MC + Progressão por Iniciador")
+    # Soma 1–para–1: menor MC com menor PA, etc.
+    df_mc_sorted = df_mc_sorted.assign(PA=pa_vals_sorted)
+    df_mc_sorted["MC"] = df_mc_sorted["MC"] + df_mc_sorted["PA"]
+
+    # Ordena para exibição (decrescente por MC combinado)
+    df_mc_pa_plot = df_mc_sorted.sort_values(by="MC", ascending=False).reset_index(drop=True)
+
+    # Formata rótulo
+    df_mc_pa_plot["MC_formatted"] = df_mc_pa_plot["MC"].apply(lambda x: f'R${x:,.2f}')
+
+    # Gráfico (mesmas métricas do primeiro)
+    fig = px.bar(df_mc_pa_plot, x="Iniciador", y="MC", title="MC + Progressão por Iniciador")
+
+    # Rótulos de dados
+    fig.update_traces(text=df_mc_pa_plot["MC_formatted"], textposition="outside")
+
+    # Força a ordem do eixo X a seguir a ordem do DataFrame já ordenado por MC
+    fig.update_layout(
+        xaxis={"categoryorder": "array", "categoryarray": df_mc_pa_plot["Iniciador"].tolist()},
+        width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
+    )
+
+    st.title("MC + Progressão por Iniciador (Ordem Corrigida)")
     st.plotly_chart(fig)
 
-    # Mostrar tabela
-    st.dataframe(df_mc_pa)
+    # Tabela com os valores combinados
+    st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
+
 
 
 
