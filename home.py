@@ -201,7 +201,7 @@ if uploaded_file:
 
     # Formatar os valores de MC como moeda BR (R$)
     df_grouped_iniciado['MC_formatted'] = df_grouped_iniciado['MC'].apply(lambda x: f'R${x:,.2f}')
-    st.title(df_grouped_iniciado)
+    print(df_grouped_iniciado)
 
     # Inicializando o app Dash
     app = dash.Dash(__name__)
@@ -252,6 +252,7 @@ if uploaded_file:
     )
     st.title("Média do SN por Desvio")
     st.plotly_chart(fig)
+
 
 
 
