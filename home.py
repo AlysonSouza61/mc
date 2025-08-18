@@ -292,7 +292,8 @@ else:
         # ======================
     # NOVO GRÁFICO (MD + PA)
     # ======================
-    md = 500  # valor fixo
+    md = round(soma_medias_mc * 0.8 / n_alvo, 2)
+    # st.write(md)
 
     # Cria uma cópia para não afetar o gráfico anterior
     df_md_pa = df_mc_sorted.copy()
@@ -320,6 +321,7 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
