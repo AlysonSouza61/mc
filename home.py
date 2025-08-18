@@ -171,6 +171,7 @@ if uploaded_file:
     media_nps = f"{media_nps:.2f}"
     media_mc = f"R${media_mc:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     soma_medias_mc_formatado = f"R${soma_medias_mc:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    PA = f"R${soma_medias_mc * 0.2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     teste = f"R${soma_medias_mc * 0.8:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
     # Layout do Streamlit
@@ -191,6 +192,7 @@ if uploaded_file:
     with col4:
         st.metric(label="Média Por Mês de MC", value=soma_medias_mc_formatado)
         st.metric(label="80%", value=teste)
+        st.metric(label="20%", value=PA)
     # Gráfico
 
     df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
@@ -249,3 +251,4 @@ if uploaded_file:
     )
     st.title("Média do SN por Desvio")
     st.plotly_chart(fig)
+
