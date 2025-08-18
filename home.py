@@ -252,6 +252,63 @@ if uploaded_file:
     st.title("Média do SN por Desvio")
     st.plotly_chart(fig)
 
+    # ======================
+    # NOVO GRÁFICO (MC + Progressão)
+    # ======================
+
+    # --- Preparar Progressão Aritmética ---
+    def dividir_progressao(total, n):
+        a1 = 50  # primeiro termo fixo
+        d = (2 * total / n - 2 * a1) / (n - 1)
+        valores = [round(a1 + i * d, 2) for i in range(n)]
+        diferenca = round(total - sum(valores), 2)
+        valores[-1] += diferenca
+        return valores
+
+    total = 1233
+    n = 10
+    valores_pa = dividir_progressao(total, n)
+
+    # Ordenar MC e valores da progressão
+    df_grouped_iniciado_mc = df.groupby("Iniciador")["MC"].mean().reset_index()
+    df_grouped_iniciado_mc = df_grouped_iniciado_mc.sort_values(by="MC", ascending=False).head(n)
+
+    MC_sorted = sorted(df_grouped_iniciado_mc["MC"].tolist())
+    valores_sorted = sorted(valores_pa)
+
+    # Somar MC + Progressão
+    soma_mc_pa = [mc + v for mc, v in zip(MC_sorted, valores_sorted)]
+
+    # Criar novo DataFrame para o gráfico
+    df_mc_pa = pd.DataFrame({
+        "Iniciador": df_grouped_iniciado_mc["Iniciador"].tolist(),
+        "MC": soma_mc_pa
+    })
+
+    # Ordenar decrescente
+    df_mc_pa = df_mc_pa.sort_values(by="MC", ascending=False)
+
+    # Formatar MC
+    df_mc_pa["MC_formatted"] = df_mc_pa["MC"].apply(lambda x: f'R${x:,.2f}')
+
+    # Criar gráfico
+    fig = px.bar(df_mc_pa, x="Iniciador", y="MC", title="MC + Progressão por Iniciador")
+
+    # Adicionar rótulos
+    fig.update_traces(text=df_mc_pa["MC_formatted"], textposition="outside")
+
+    # Layout do gráfico
+    fig.update_layout(
+        width=1000,
+        height=600,
+        margin=dict(t=50, b=100, l=50, r=50),
+    )
+
+    st.title("MC + Progressão por Iniciador")
+    st.plotly_chart(fig)
+
+    # Mostrar tabela
+    st.dataframe(df_mc_pa)
 
 
 
