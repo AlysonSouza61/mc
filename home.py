@@ -230,7 +230,7 @@ if uploaded_file:
 # ======================
 
 def dividir_progressao(total, n):
-    a1 = 50.0  # primeiro termo fixo
+    a1 = 20.0  # primeiro termo fixo
     d = (2 * total / n - 2 * a1) / (n - 1)
     valores = [round(a1 + i * d, 2) for i in range(n)]
     diferenca = round(total - sum(valores), 2)
@@ -324,6 +324,7 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
