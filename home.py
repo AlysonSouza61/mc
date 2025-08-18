@@ -265,8 +265,8 @@ if uploaded_file:
         valores[-1] += diferenca
         return valores
 
-    total = 1233
-    n = 10
+    total = 1000
+    n = 11
     valores_pa = dividir_progressao(total, n)
 
     # Ordenar MC e valores da progressão
@@ -309,6 +309,7 @@ if uploaded_file:
 
     # Mostrar tabela
     st.dataframe(df_mc_pa)
+
 
 
 
