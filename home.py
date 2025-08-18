@@ -248,17 +248,17 @@ if uploaded_file:
     MC_sorted = sorted(df_grouped_iniciado_mc["MC"].tolist())
     valores_sorted = sorted(valores_pa)
 
-    # Somar MC + Progressão
-    soma_mc_pa = [mc + v for mc, v in zip(MC_sorted, valores_sorted)]
-
-    # Criar novo DataFrame para o gráfico
-    df_mc_pa = pd.DataFrame({
+        # Somar MC + Progressão com iniciadores corretos
+    df_temp = pd.DataFrame({
         "Iniciador": df_grouped_iniciado_mc["Iniciador"].tolist(),
-        "MC": soma_mc_pa
+        "MC_original": MC_sorted,
+        "PA": valores_sorted
     })
 
-    # Ordenar decrescente
-    df_mc_pa = df_mc_pa.sort_values(by="MC", ascending=False)
+    df_temp["MC"] = df_temp["MC_original"] + df_temp["PA"]
+
+    # Ordenar decrescente pela soma
+    df_mc_pa = df_temp.sort_values(by="MC", ascending=False)
 
     # Formatar MC
     df_mc_pa["MC_formatted"] = df_mc_pa["MC"].apply(lambda x: f'R${x:,.2f}')
