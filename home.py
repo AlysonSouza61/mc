@@ -165,6 +165,8 @@ if uploaded_file:
 
     # Calcular a soma das médias de MC por Iniciador
     soma_medias_mc = df_grouped_iniciado["MC"].sum()
+    tamanho_de_n = len(soma_medias_mc)
+    st.write(tamanho_de_n)
 
     # Formatar os valores
     media_sn = f"{media_sn:.2f}"
@@ -283,7 +285,7 @@ else:
         width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
     )
 
-    st.title("MC + Progressão por Iniciador (Ordem Corrigida)")
+    st.title("MC + Progressão por Iniciador")
     st.plotly_chart(fig)
     
     # Tabela com os valores combinados
@@ -293,8 +295,7 @@ else:
     # NOVO GRÁFICO (MD + PA)
     # ======================
     md = round(soma_medias_mc * 0.8 / n_alvo, 2)
-    # st.write(md)
-
+    #st.write(md)
     # Cria uma cópia para não afetar o gráfico anterior
     df_md_pa = df_mc_sorted.copy()
 
@@ -308,7 +309,7 @@ else:
     df_md_pa_plot["MC_formatted"] = df_md_pa_plot["MC"].apply(lambda x: f'R${x:,.2f}')
 
     # Gráfico
-    fig2 = px.bar(df_md_pa_plot, x="Iniciador", y="MC", title="MD + Progressão por Iniciador")
+    fig2 = px.bar(df_md_pa_plot, x="Iniciador", y="MC", title="MC por Iniciador")
 
     fig2.update_traces(text=df_md_pa_plot["MC_formatted"], textposition="outside")
     fig2.update_layout(
@@ -316,11 +317,12 @@ else:
         width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
     )
 
-    st.title("MD + Progressão por Iniciador")
+    st.title("MC por Iniciador")
     st.plotly_chart(fig2)
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
