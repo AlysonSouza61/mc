@@ -269,8 +269,9 @@ if uploaded_file:
     # Adicionar rótulos
     fig.update_traces(text=df_mc_pa["MC_formatted"], textposition="outside")
 
-    # Layout do gráfico
+    # Forçar ordenação do eixo x para seguir a ordem decrescente de MC
     fig.update_layout(
+        xaxis={'categoryorder':'array', 'categoryarray':df_mc_pa["Iniciador"].tolist()},
         width=1000,
         height=600,
         margin=dict(t=50, b=100, l=50, r=50),
@@ -281,6 +282,8 @@ if uploaded_file:
 
     # Mostrar tabela
     st.dataframe(df_mc_pa)
+
+
 
 
 
