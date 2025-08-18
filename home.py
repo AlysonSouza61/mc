@@ -193,9 +193,6 @@ if uploaded_file:
         st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
         st.metric(label="80%", value=teste)
         st.metric(label="20%", value=PA_20)
-
-    # Exibir o tamanho do dicionário no app
-    st.write("N = ", len(MC))
     
     # Gráfico
 
@@ -241,6 +238,8 @@ def dividir_progressao(total, n):
     return valores
 
 # Parâmetros da PA
+# Exibir o tamanho do dicionário no app
+st.write("N = ", len(df_grouped_iniciado))
 total_pa = round(soma_medias_mc * 0.2, 2)
 n_alvo = 11
 
@@ -324,6 +323,7 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
 
 
 
