@@ -187,7 +187,8 @@ if uploaded_file:
         st.metric(label="Média NPS", value=media_nps)
 
     with col3:
-        st.metric(label="Média MC Por técnico", value=media_mc)
+        #st.metric(label="Média MC Por técnico", value=media_mc)
+        st.metric(label="Média MC Por técnico", value=media_md_pa)
 
     with col4:
         st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
@@ -327,7 +328,8 @@ else:
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
-    st.write("Média = ", round(media_md_pa, 2))
+    # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
