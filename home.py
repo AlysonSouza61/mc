@@ -174,9 +174,6 @@ if uploaded_file:
     PA_20 = f"R${soma_medias_mc * 0.2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     teste = f"R${soma_medias_mc * 0.8:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-    # Layout do Streamlit
-    st.title("Dashboard de Métricas")
-
     # grades
 
     # grades
@@ -292,8 +289,13 @@ else:
     df_md_pa["MC"] = md + df_md_pa["PA"]
     
     media_md_pa = df_md_pa["MC"].mean()
+    media_md_pa = f"R${media_md_pa:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
     ####
+    
+    # Layout do Streamlit
+    st.title("Dashboard de Métricas")
+    
     # Criando os cards em uma grid (4 colunas agora)
     col1, col2, col3, col4 = st.columns(4)
 
@@ -335,6 +337,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
