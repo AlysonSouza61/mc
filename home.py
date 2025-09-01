@@ -67,7 +67,7 @@ if uploaded_file:
     # Fator 4: (df['SN'] * 0.01 + 0.99)
     # Fator 5: (df['SN'] * 0.005 + 0.995)
     df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.7 + 0.3)
-    df['MC'] = 2000 * df['NPS']
+    df['MC'] = 1800 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
     
@@ -180,7 +180,7 @@ if uploaded_file:
     
     # Gráfico
 
-    """ df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
+    df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
 
     df_grouped_iniciado = df_grouped_iniciado.sort_values(by="MC", ascending=False)
 
@@ -207,7 +207,7 @@ if uploaded_file:
     st.plotly_chart(fig)
         
     # Exibir dataframe filtrado
-    st.dataframe(df) """
+    st.dataframe(df)
 
  # ======================
 # NOVO GRÁFICO (MC + Progressão) — ORDEM CORRIGIDA
@@ -337,6 +337,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
