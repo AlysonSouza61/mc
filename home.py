@@ -303,7 +303,9 @@ else:
 
     # Substitui MC pela soma de md + PA
     df_md_pa["MC"] = md + df_md_pa["PA"]
-
+    
+    media_md_pa = df_md_pa["MC"].mean()
+    
     # Ordena decrescente para exibição
     df_md_pa_plot = df_md_pa.sort_values(by="MC", ascending=False).reset_index(drop=True)
 
@@ -324,6 +326,9 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+
+    st.write("Média = ", round(media_md_pa * 0.8 / n_alvo, 2))
+
 
 
 
