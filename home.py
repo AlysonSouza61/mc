@@ -180,7 +180,7 @@ if uploaded_file:
     
     # Gráfico
 
-    df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
+    """ df_grouped_iniciado = df.groupby("Iniciador")["MC"].mean().reset_index()
 
     df_grouped_iniciado = df_grouped_iniciado.sort_values(by="MC", ascending=False)
 
@@ -207,7 +207,7 @@ if uploaded_file:
     st.plotly_chart(fig)
         
     # Exibir dataframe filtrado
-    st.dataframe(df)
+    st.dataframe(df) """
 
  # ======================
 # NOVO GRÁFICO (MC + Progressão) — ORDEM CORRIGIDA
@@ -337,6 +337,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
