@@ -313,8 +313,8 @@ else:
     with col4:
         #st.metric(label="Média MC Por técnico (Média + PA)", value=media_mc)
         st.metric(label="Média MC Por técnico", value=media_md_pa)
-        st.metric("N = ", len(df_grouped_iniciado))
         st.metric("Média dos 80% = ", round(soma_medias_mc * 0.8 / n_alvo, 2))
+        st.metric("N (Número de técnicos) = ", len(df_grouped_iniciado))
     ####
     
     # Ordena decrescente para exibição
@@ -339,6 +339,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
