@@ -225,8 +225,8 @@ def dividir_progressao(total, n):
 
 total_pa = round(soma_medias_mc * 0.2, 2)
 n_alvo = len(df_grouped_iniciado)
-st.write("N = ", len(df_grouped_iniciado))
-st.write("Média dos 80% = ", round(soma_medias_mc * 0.8 / n_alvo, 2))
+#st.write("N = ", len(df_grouped_iniciado))
+#st.write("Média dos 80% = ", round(soma_medias_mc * 0.8 / n_alvo, 2))
 
 # Média de MC por Iniciador
 df_mc_iniciador = df.groupby("Iniciador")["MC"].mean().reset_index()
@@ -306,13 +306,15 @@ else:
         st.metric(label="Média NPS", value=media_nps)
 
     with col3:
-        #st.metric(label="Média MC Por técnico", value=media_mc)
-        st.metric(label="Média MC Por técnico", value=media_md_pa)
-
-    with col4:
         st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
         st.metric(label="80%", value=teste)
         st.metric(label="20%", value=PA_20)
+
+    with col4:
+        #st.metric(label="Média MC Por técnico", value=media_mc)
+        st.metric(label="Média MC Por técnico", value=media_md_pa)
+        st.write("N = ", len(df_grouped_iniciado))
+        st.write("Média dos 80% = ", round(soma_medias_mc * 0.8 / n_alvo, 2))
     ####
     
     # Ordena decrescente para exibição
@@ -337,6 +339,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
