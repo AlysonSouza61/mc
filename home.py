@@ -203,7 +203,7 @@ if uploaded_file:
         height=600,  # Altura do gráfico
         margin=dict(t=50, b=100, l=50, r=50),  # Margens para evitar corte
     )
-    st.title("Média do MC por Iniciador")
+    #st.title("Média do MC por Iniciador")
     #st.plotly_chart(fig)
         
     # Exibir dataframe filtrado
@@ -271,11 +271,11 @@ else:
         width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
     )
 
-    st.title("MC + Progressão por Iniciador")
-    st.plotly_chart(fig)
+    #st.title("MC + Progressão por Iniciador")
+    #st.plotly_chart(fig)
     
     # Tabela com os valores combinados
-    st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+    #st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # ======================
     # NOVO GRÁFICO (MD + PA)
@@ -337,6 +337,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
