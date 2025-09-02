@@ -337,9 +337,10 @@ else:
 
     # Exibe a tabela com os valores do novo gráfico
     st.title("Tabela: Iniciador / PA / MC")
-    st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_Formatado"]])
+    st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
