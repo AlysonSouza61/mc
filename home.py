@@ -94,7 +94,7 @@ if uploaded_file:
     )
 
         # Lista de técnicos a excluir da seleção padrão (mas ainda aparecem na lista do filtro)
-    tecnicos_excluidos = ["LARISSA PASQUOTO RODRIGUES", "LAIRA ROBERTA SOUZA LOPES"]
+    tecnicos_excluidos = ["LARISSA PASQUOTO RODRIGUES", "LAIRA ROBERTA SOUZA LOPES", "EDUARDO DO VALE DE OLIVEIRA"]
     
     # Lista de todos técnicos disponíveis (inclusive os que serão excluídos da seleção)
     tecnicos_disponiveis = sorted(df['Iniciador'].dropna().unique().tolist())
@@ -340,6 +340,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
