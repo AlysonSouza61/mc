@@ -77,7 +77,7 @@ if uploaded_file:
     # Adiciona o texto no final da sidebar
     st.sidebar.markdown(
             """
-            <div style="position: fixed; bottom: 9px; width: 100%; text-align: left; font-size: 12px; color: gray;">
+            <div style="position: fixed; bottom: 9px; width: 100%; text-align: left; font-size: 12px; color: gray; padding: 10px;">
                 <p>Desenvolvedor: Alyson Anapaz</p>
                 <p>Departamento: Assistência Técnica</p>
                 <p>Versão do Software: 3.0</p>
@@ -340,6 +340,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
