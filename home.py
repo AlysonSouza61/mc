@@ -78,10 +78,7 @@ if uploaded_file:
     st.sidebar.markdown(
             """
             <div style="position: fixed; bottom: 9px; width: 100%; text-align: left; font-size: 12px; color: gray;">
-                <br>
-                <br>
-                <br>
-                <br>
+                <p></p>
                 <p>Desenvolvedor: Alyson Anapaz</p>
                 <p>Departamento: Assistência Técnica</p>
                 <p>Versão do Software: 3.0</p>
@@ -344,6 +341,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
