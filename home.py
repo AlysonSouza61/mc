@@ -204,10 +204,10 @@ if uploaded_file:
         margin=dict(t=50, b=100, l=50, r=50),  # Margens para evitar corte
     )
     st.title("Média do MC por Iniciador")
-    st.plotly_chart(fig)
+    #st.plotly_chart(fig)
         
     # Exibir dataframe filtrado
-    st.dataframe(df)
+    #st.dataframe(df)
 
  # ======================
 # NOVO GRÁFICO (MC + Progressão) — ORDEM CORRIGIDA
@@ -337,6 +337,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
