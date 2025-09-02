@@ -336,9 +336,11 @@ else:
     st.plotly_chart(fig2)
 
     # Exibe a tabela com os valores do novo gráfico
-    st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
+    st.title("Tabela: Iniciador / PA / MC")
+    st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_Formatado"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
