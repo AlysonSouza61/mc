@@ -185,7 +185,7 @@ if uploaded_file:
     df_grouped_iniciado = df_grouped_iniciado.sort_values(by="SN", ascending=False)
 
     # Formatar os valores de MC como moeda BR (R$)
-    df_grouped_iniciado['MC_formatted'] = df_grouped_iniciado['SN'].apply(lambda x: f'R${x:,.2f}')
+    df_grouped_iniciado['MC_formatted'] = df_grouped_iniciado['SN'].apply(lambda x: f'{x:,.2f}')
 
     # Inicializando o app Dash
     app = dash.Dash(__name__)
@@ -340,6 +340,7 @@ else:
     st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
