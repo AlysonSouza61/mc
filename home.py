@@ -431,15 +431,20 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Regras de Bônus por SN")
 
-# Criar colunas coloridas para visualização
+# Exibir cada faixa como um card
 for i, row in regras_bonus.iterrows():
-    col1, col2, col3, col4 = st.columns([2, 2, 2, 4])
-    color = "#ff4d4d" if row["Intervalo de SN"] == "< 0,49" else "#4CAF50"  # vermelho para <0,49, verde para >0,49
-    col1.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:center;'><b>{row['Intervalo de SN']}</b></div>", unsafe_allow_html=True)
-    col2.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:center;'>{row['Valor da Faixa (R$)']}</div>", unsafe_allow_html=True)
-    col3.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:center;'>{row['Bônus Total (R$)']}</div>", unsafe_allow_html=True)
-    col4.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:left;'>{row['Observação']}</div>", unsafe_allow_html=True)
-
+    # Escolher cor do card
+    color = "#ff4d4d" if row["Intervalo de SN"] == "< 0,49" else "#4CAF50"  # vermelho para <0,49, verde para >=0,49
+    st.markdown(
+        f"""
+        <div style="background-color:{color}; color:white; padding:15px; border-radius:10px; margin-bottom:10px;">
+            <h4 style="margin:0; text-align:center;">Intervalo SN: {row['Intervalo de SN']}</h4>
+            <p style="margin:5px 0; text-align:center;">Valor da Faixa: R$ {row['Valor da Faixa (R$)']}</p>
+            <p style="margin:5px 0; text-align:center; font-weight:bold;">Bônus Total: R$ {row['Bônus Total (R$)']}</p>
+            <p style="margin:5px 0; text-align:center;">{row['Observação']}</p>
+        </div>
+        """, unsafe_allow_html=True
+    )
 
 
 
