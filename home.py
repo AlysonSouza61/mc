@@ -414,7 +414,7 @@ st.plotly_chart(fig)
 import streamlit as st
 import pandas as pd
 
-# Tabela de regras do bônus
+# Tabela explicativa do bônus
 regras_bonus = pd.DataFrame({
     "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
     "Valor da Faixa (R$)": [0, 200, 300, 400, 500, 1000],
@@ -430,25 +430,9 @@ regras_bonus = pd.DataFrame({
 })
 
 st.subheader("Regras de Bônus por SN")
+st.table(regras_bonus)
 
-# Criar duas colunas
-col1, col2 = st.columns(2)
 
-# Distribuir os cards entre as colunas
-for i, row in regras_bonus.iterrows():
-    color = "#ff4d4d" if row["Intervalo de SN"] == "< 0,49" else "#4CAF50"
-    # Escolher em qual coluna colocar
-    col = col1 if i % 2 == 0 else col2
-    col.markdown(
-        f"""
-        <div style="background-color:{color}; color:white; padding:15px; border-radius:10px; margin-bottom:10px;">
-            <h4 style="margin:0; text-align:center;">Intervalo SN: {row['Intervalo de SN']}</h4>
-            <p style="margin:5px 0; text-align:center;">Valor da Faixa: R$ {row['Valor da Faixa (R$)']}</p>
-            <p style="margin:5px 0; text-align:center; font-weight:bold;">Bônus Total: R$ {row['Bônus Total (R$)']}</p>
-            <p style="margin:5px 0; text-align:center;">{row['Observação']}</p>
-        </div>
-        """, unsafe_allow_html=True
-    )
 
 
 
