@@ -175,7 +175,31 @@ if uploaded_file:
     teste = f"R${soma_medias_mc * 0.8:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
     # grades
+    ####
+    
+    # Layout do Streamlit
+    st.title("Dashboard de Métricas")
+    
+    # Criando os cards em uma grid (4 colunas agora)
+    col1, col2, col3, col4 = st.columns(4)
 
+    with col1:
+        st.metric(label="Média SN", value=media_sn)
+
+    with col2:
+        st.metric(label="Média NPS", value=media_nps)
+
+    with col3:
+        st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
+        st.metric(label="80%", value=teste)
+        st.metric(label="20%", value=PA_20)
+
+    with col4:
+        #st.metric(label="Média MC Por técnico", value=media_mc)
+        st.metric(label="Média MC Por técnico (Média + PA)", value=media_md_pa)
+        st.metric("Média dos 80%", round(soma_medias_mc * 0.8 / n_alvo, 2))
+        st.metric("N (Número de técnicos)", len(df_grouped_iniciado))
+    ####
     # grades
     
     # Gráfico
@@ -290,32 +314,6 @@ else:
     
     media_md_pa = df_md_pa["MC"].mean()
     media_md_pa = f"R${media_md_pa:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-
-    ####
-    
-    # Layout do Streamlit
-    st.title("Dashboard de Métricas")
-    
-    # Criando os cards em uma grid (4 colunas agora)
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric(label="Média SN", value=media_sn)
-
-    with col2:
-        st.metric(label="Média NPS", value=media_nps)
-
-    with col3:
-        st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
-        st.metric(label="80%", value=teste)
-        st.metric(label="20%", value=PA_20)
-
-    with col4:
-        #st.metric(label="Média MC Por técnico", value=media_mc)
-        st.metric(label="Média MC Por técnico (Média + PA)", value=media_md_pa)
-        st.metric("Média dos 80%", round(soma_medias_mc * 0.8 / n_alvo, 2))
-        st.metric("N (Número de técnicos)", len(df_grouped_iniciado))
-    ####
     
     # Ordena decrescente para exibição
     df_md_pa_plot = df_md_pa.sort_values(by="MC", ascending=False).reset_index(drop=True)
@@ -340,6 +338,7 @@ else:
     #st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
 
     # st.write("Média = ", round(media_md_pa, 2))
+
 
 
 
