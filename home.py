@@ -325,11 +325,11 @@ else:
 
 
 # =========================
-# NOVO GRÁFICO - BÔNUS POR INICIADOR
+# NOVO GRÁFICO - SN + BÔNUS COMO RÓTULOS
 # =========================
 
 # Calcular média geral do departamento
-media_sn = df["SN"].mean()
+#media_sn = df["SN"].mean()
 
 # Agrupar por iniciador e calcular média individual
 df_grouped_iniciado_SN = df.groupby("Iniciador")["SN"].mean().reset_index()
@@ -356,10 +356,16 @@ def calcular_bonus(sn, media_sn):
 # Aplicar cálculo de bônus
 df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["SN"].apply(lambda x: calcular_bonus(x, media_sn))
 
-# Formatar valores do bônus em moeda BR
-df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", "."))
+# Formatar valores
+df_grouped_iniciado_SN["SN_formatted"] = df_grouped_iniciado_SN["SN"].apply(lambda x: f"{x:.2f}".replace(".", ","))
+df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(
+    lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", ".")
+)
 
-# Criar gráfico de barras (SN no eixo Y, mas rótulo mostra o bônus)
+# Criar coluna combinada para os rótulos
+df_grouped_iniciado_SN["Label"] = df_grouped_iniciado_SN["SN_formatted"] + " | " + df_grouped_iniciado_SN["Bonus_formatted"]
+
+# Criar gráfico de barras (SN no eixo Y, rótulos mostram SN + bônus)
 fig = px.bar(
     df_grouped_iniciado_SN,
     x="Iniciador",
@@ -367,9 +373,9 @@ fig = px.bar(
     title="Média do SN por Iniciador e Bônus Correspondente"
 )
 
-# Adicionar rótulos de dados (bônus)
+# Adicionar rótulos de dados (SN + bônus)
 fig.update_traces(
-    text=df_grouped_iniciado_SN["Bonus_formatted"],
+    text=df_grouped_iniciado_SN["Label"],
     textposition="outside"
 )
 
@@ -385,6 +391,8 @@ fig.update_layout(
 # Exibir no Streamlit
 st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
+
 
 
 
