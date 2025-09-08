@@ -336,7 +336,7 @@ else:
         #st.metric(label="Total Por Mês de MC", value=soma_medias_mc_formatado)
         #st.metric(label="80%", value=teste)
         #st.metric(label="20%", value=PA_20)
-        #st.metric("N (Número de técnicos)", len(df_grouped_iniciado))
+        st.metric("N (Número de técnicos)", len(df_grouped_iniciado))
 
     #with col4:
         #st.metric(label="Média MC Por técnico", value=media_mc)
@@ -346,6 +346,7 @@ else:
     ####
 
     # Grades
+
 
 
 
