@@ -409,8 +409,6 @@ st.title("NPS por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
 
 
-import streamlit as st
-import pandas as pd
 
 # Tabela explicativa do bônus
 regras_bonus = pd.DataFrame({
@@ -427,8 +425,9 @@ regras_bonus = pd.DataFrame({
     ]
 })
 
-st.subheader("Regras de Bônus por SN")
+st.subheader("Critérios de Bônus por SN (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
