@@ -295,14 +295,13 @@ else:
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric(label="Média SN", value=f"{media_sn:.2f}".replace(".", ","))
+    st.metric(label="Média SN", value=media_sn)
 
 with col2:
-    st.metric(label="Média NPS", value=f"{media_nps:.2f}".replace(".", ","))
+    st.metric(label="Média NPS", value=media_nps)
 
 with col3:
-    st.metric(label="N (Número de técnicos)", value=len(df_grouped_iniciado))
-
+    st.metric("N (Número de técnicos)", len(df_grouped_iniciado))
 
 
     #with col4:
@@ -426,6 +425,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Regras de Bônus por SN")
 st.table(regras_bonus)
+
 
 
 
