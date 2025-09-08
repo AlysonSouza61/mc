@@ -292,16 +292,32 @@ else:
 
     ####
 
+# Garantir que seja número
+if media_sn is None or pd.isna(media_sn):
+    media_sn = 0  # ou outro valor padrão
+
+# Cor condicional
+cor_sn = "#ff4d4d" if media_sn < 0.49 else "#4CAF50"
+
+# Layout
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric(label="Média SN", value=media_sn)
+    st.markdown(
+        f"""
+        <div style="background-color:{cor_sn}; padding:20px; border-radius:10px; text-align:center;">
+            <h4 style="margin:0; color:white;">Média SN</h4>
+            <p style="margin:0; font-size:24px; color:white;"><b>{media_sn:.2f}</b></p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 with col2:
-    st.metric(label="Média NPS", value=media_nps)
+    st.metric(label="Média NPS", value=f"{media_nps:.2f}")
 
 with col3:
-    st.metric("N (Número de técnicos)", len(df_grouped_iniciado))
+    st.metric(label="N (Número de técnicos)", value=num_tecnicos)
 
 
     #with col4:
@@ -425,6 +441,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Regras de Bônus por SN")
 st.table(regras_bonus)
+
 
 
 
