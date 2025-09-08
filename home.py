@@ -399,7 +399,7 @@ fig.update_layout(
 )
 
 # Exibir no Streamlit
-st.title("Critérios de Bônus por SN (válidas se a Média do Departamento ≥ 0,49)")
+st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
 
 
@@ -423,8 +423,9 @@ regras_bonus = pd.DataFrame({
     ]
 })
 
-st.subheader("Regras de Bônus por SN")
+st.subheader("Critérios de Bônus por SN (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
