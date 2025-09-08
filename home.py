@@ -325,7 +325,7 @@ else:
 
 
 # =========================
-# NOVO GRÁFICO - SN EM CIMA / BÔNUS NO CENTRO DA BARRA
+# NOVO GRÁFICO - SN EM NEGRITO / BÔNUS CENTRALIZADO COM SOMBRA
 # =========================
 
 # Calcular média geral do departamento
@@ -357,7 +357,7 @@ def calcular_bonus(sn, media_sn):
 df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["SN"].apply(lambda x: calcular_bonus(x, media_sn))
 
 # Formatar valores
-df_grouped_iniciado_SN["SN_formatted"] = df_grouped_iniciado_SN["SN"].apply(lambda x: f"{x:.2f}".replace(".", ","))
+df_grouped_iniciado_SN["SN_formatted"] = df_grouped_iniciado_SN["SN"].apply(lambda x: f"<b>{x:.2f}</b>".replace(".", ","))
 df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(
     lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", ".")
 )
@@ -370,13 +370,14 @@ fig = px.bar(
     title="Média do SN por Iniciador e Bônus Correspondente"
 )
 
-# Adicionar rótulos de SN (em cima da barra)
+# Adicionar rótulos de SN (em cima da barra, em negrito)
 fig.update_traces(
     text=df_grouped_iniciado_SN["SN_formatted"],
-    textposition="outside"
+    textposition="outside",
+    textfont=dict(size=12, color="black")
 )
 
-# Adicionar rótulos de Bônus (no centro da barra, cor branca para contraste)
+# Adicionar rótulos de Bônus (no centro da barra, com sombra para contraste)
 for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus_formatted"]):
     fig.add_annotation(
         x=df_grouped_iniciado_SN["Iniciador"].iloc[i],
@@ -384,8 +385,14 @@ for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus_formatted"]):
         text=bonus,
         showarrow=False,
         font=dict(size=13, color="white", family="Arial Black"),
+        align="center",
         xanchor="center",
-        yanchor="middle"
+        yanchor="middle",
+        bgcolor="rgba(0,0,0,0.6)",  # fundo preto semitransparente
+        borderpad=4,
+        bordercolor="black",
+        borderwidth=1,
+        opacity=0.9
     )
 
 # Layout do gráfico
@@ -400,6 +407,8 @@ fig.update_layout(
 # Exibir no Streamlit
 st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
+
 
 
 
