@@ -425,8 +425,9 @@ regras_bonus = pd.DataFrame({
     ]
 })
 
-st.subheader("Critérios de Bônus por SN (válidas se a Média do Departamento ≥ 0,49)")
+st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
