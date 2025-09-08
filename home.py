@@ -411,7 +411,10 @@ st.plotly_chart(fig)
 
 # Tabela de Métricas
 
-# Tabela explicativa do bônus
+import streamlit as st
+import pandas as pd
+
+# Tabela de regras do bônus
 regras_bonus = pd.DataFrame({
     "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
     "Valor da Faixa (R$)": [0, 200, 300, 400, 500, 1000],
@@ -427,7 +430,16 @@ regras_bonus = pd.DataFrame({
 })
 
 st.subheader("Regras de Bônus por SN")
-st.table(regras_bonus)
+
+# Criar colunas coloridas para visualização
+for i, row in regras_bonus.iterrows():
+    col1, col2, col3, col4 = st.columns([2, 2, 2, 4])
+    color = "#ff4d4d" if row["Intervalo de SN"] == "< 0,49" else "#4CAF50"  # vermelho para <0,49, verde para >0,49
+    col1.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:center;'><b>{row['Intervalo de SN']}</b></div>", unsafe_allow_html=True)
+    col2.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:center;'>{row['Valor da Faixa (R$)']}</div>", unsafe_allow_html=True)
+    col3.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:center;'>{row['Bônus Total (R$)']}</div>", unsafe_allow_html=True)
+    col4.markdown(f"<div style='background-color:{color}; color:white; padding:5px; text-align:left;'>{row['Observação']}</div>", unsafe_allow_html=True)
+
 
 
 
