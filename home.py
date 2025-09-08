@@ -431,15 +431,15 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Regras de Bônus por SN")
 
-# Criar HTML da tabela com cabeçalho em negrito, centralizado e com fundo colorido
+# HTML da tabela
 html_table = """
-<table style="width:100%; border-collapse: collapse;">
-    <thead>
-        <tr style="background-color:#4CAF50; color:white;">
-            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Intervalo de SN</th>
-            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Valor da Faixa (R$)</th>
-            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Bônus Total (R$)</th>
-            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Observação</th>
+<table style="width:100%; border-collapse: collapse; border: 1px solid black;">
+    <thead style="background-color:#4CAF50; color:white; font-weight:bold;">
+        <tr>
+            <th style="border: 1px solid black; text-align:center;">Intervalo de SN</th>
+            <th style="border: 1px solid black; text-align:center;">Valor da Faixa (R$)</th>
+            <th style="border: 1px solid black; text-align:center;">Bônus Total (R$)</th>
+            <th style="border: 1px solid black; text-align:center;">Observação</th>
         </tr>
     </thead>
     <tbody>
@@ -457,7 +457,10 @@ for i, row in regras_bonus.iterrows():
 
 html_table += "</tbody></table>"
 
+# Exibir tabela no Streamlit
 st.markdown(html_table, unsafe_allow_html=True)
+
+
 
 
 
