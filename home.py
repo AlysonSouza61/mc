@@ -431,11 +431,15 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Regras de Bônus por SN")
 
-# Exibir cada faixa como um card
+# Criar duas colunas
+col1, col2 = st.columns(2)
+
+# Distribuir os cards entre as colunas
 for i, row in regras_bonus.iterrows():
-    # Escolher cor do card
-    color = "#ff4d4d" if row["Intervalo de SN"] == "< 0,49" else "#4CAF50"  # vermelho para <0,49, verde para >=0,49
-    st.markdown(
+    color = "#ff4d4d" if row["Intervalo de SN"] == "< 0,49" else "#4CAF50"
+    # Escolher em qual coluna colocar
+    col = col1 if i % 2 == 0 else col2
+    col.markdown(
         f"""
         <div style="background-color:{color}; color:white; padding:15px; border-radius:10px; margin-bottom:10px;">
             <h4 style="margin:0; text-align:center;">Intervalo SN: {row['Intervalo de SN']}</h4>
@@ -445,6 +449,8 @@ for i, row in regras_bonus.iterrows():
         </div>
         """, unsafe_allow_html=True
     )
+
+
 
 
 
