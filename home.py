@@ -354,10 +354,10 @@ def calcular_bonus(sn, media_sn):
             return 200 + 1000
 
 # Aplicar cálculo de bônus
-df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["SN"].apply(lambda x: calcular_bonus(x, media_sn))
+df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["NPS"].apply(lambda x: calcular_bonus(x, media_sn))
 
 # Formatar valores
-df_grouped_iniciado_SN["SN_formatted"] = df_grouped_iniciado_SN["SN"].apply(lambda x: f"<b>{x:.2f}</b>".replace(".", ","))
+df_grouped_iniciado_SN["SN_formatted"] = df_grouped_iniciado_SN["NPS"].apply(lambda x: f"<b>{x:.2f}</b>".replace(".", ","))
 df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(
     lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", ".")
 )
@@ -366,7 +366,7 @@ df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].appl
 fig = px.bar(
     df_grouped_iniciado_SN,
     x="Iniciador",
-    y="SN",
+    y="NPS",
     title="Média do SN por Iniciador e Bônus Correspondente"
 )
 
@@ -381,7 +381,7 @@ fig.update_traces(
 for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus_formatted"]):
     fig.add_annotation(
         x=df_grouped_iniciado_SN["Iniciador"].iloc[i],
-        y=df_grouped_iniciado_SN["SN"].iloc[i] / 2,  # centro da barra
+        y=df_grouped_iniciado_SN["NPS"].iloc[i] / 2,  # centro da barra
         text=bonus,
         showarrow=False,
         font=dict(size=13, color="white", family="Arial Black"),
@@ -407,6 +407,7 @@ fig.update_layout(
 # Exibir no Streamlit
 st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
 
 
 
