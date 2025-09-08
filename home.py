@@ -329,7 +329,7 @@ else:
 # =========================
 
 # Calcular média geral do departamento
-#media_sn = df["SN"].mean()
+media_sn = df["SN"].mean()
 
 # Agrupar por iniciador e calcular média individual
 df_grouped_iniciado_SN = df.groupby("Iniciador")["SN"].mean().reset_index()
@@ -391,6 +391,7 @@ fig.update_layout(
 # Exibir no Streamlit
 st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
 
 
 
