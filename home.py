@@ -325,7 +325,7 @@ else:
 
 
 # =========================
-# NOVO GRÁFICO - SN EM CIMA / BÔNUS AO LADO DIREITO
+# NOVO GRÁFICO - SN EM CIMA / BÔNUS NO CENTRO DA BARRA
 # =========================
 
 # Calcular média geral do departamento
@@ -376,17 +376,16 @@ fig.update_traces(
     textposition="outside"
 )
 
-# Adicionar rótulos de Bônus (ao lado direito da barra)
+# Adicionar rótulos de Bônus (no centro da barra, cor branca para contraste)
 for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus_formatted"]):
     fig.add_annotation(
         x=df_grouped_iniciado_SN["Iniciador"].iloc[i],
-        y=df_grouped_iniciado_SN["SN"].iloc[i],
+        y=df_grouped_iniciado_SN["SN"].iloc[i] / 2,  # centro da barra
         text=bonus,
         showarrow=False,
-        font=dict(size=12, color="blue"),
-        xanchor="left",   # alinhar à esquerda do ponto X
-        yanchor="middle",
-        xshift=40         # desloca para direita da barra
+        font=dict(size=13, color="white", family="Arial Black"),
+        xanchor="center",
+        yanchor="middle"
     )
 
 # Layout do gráfico
@@ -401,6 +400,8 @@ fig.update_layout(
 # Exibir no Streamlit
 st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
+
 
 
 
