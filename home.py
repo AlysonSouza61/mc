@@ -293,9 +293,10 @@ else:
     ####
 
 col1, col2, col3 = st.columns(3)
-# Coluna 1 com cor condicional
-cor_sn = "#ff4d4d" if media_sn < 0.49 else "#4CAF50"  # vermelho <0.49, verde >=0.49
+
 with col1:
+    # Coluna 1 com cor condicional
+    cor_sn = "#ff4d4d" if media_sn < 0.49 else "#4CAF50"  # vermelho <0.49, verde >=0.49
     #st.metric(label="Média SN", value=media_sn)
     st.markdown(
         f"""
@@ -435,6 +436,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Regras de Bônus por SN")
 st.table(regras_bonus)
+
 
 
 
