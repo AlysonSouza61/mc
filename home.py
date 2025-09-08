@@ -325,7 +325,7 @@ else:
 
 
 # =========================
-# NOVO GRÁFICO - SN EM NEGRITO / BÔNUS CENTRALIZADO COM SOMBRA
+# NOVO GRÁFICO - NPS EM NEGRITO / BÔNUS CENTRALIZADO COM SOMBRA
 # =========================
 
 # Calcular média geral do departamento
@@ -367,7 +367,7 @@ fig = px.bar(
     df_grouped_iniciado_SN,
     x="Iniciador",
     y="NPS",
-    title="Média do SN por Iniciador e Bônus Correspondente"
+    title="Média do NPS por Iniciador e Bônus Correspondente"
 )
 
 # Adicionar rótulos de SN (em cima da barra, em negrito)
@@ -400,13 +400,14 @@ fig.update_layout(
     width=1000,
     height=600,
     margin=dict(t=50, b=100, l=50, r=50),
-    yaxis=dict(title="SN Médio"),
+    yaxis=dict(title="NPS Médio"),
     xaxis=dict(title="Iniciador")
 )
 
 # Exibir no Streamlit
-st.title("SN por Iniciador com Bônus Calculado")
+st.title("NPS por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
 
 
 
