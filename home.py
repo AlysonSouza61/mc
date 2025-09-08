@@ -411,6 +411,9 @@ st.plotly_chart(fig)
 
 # Tabela de Métricas
 
+import streamlit as st
+import pandas as pd
+
 # Tabela explicativa do bônus
 regras_bonus = pd.DataFrame({
     "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
@@ -455,6 +458,8 @@ for i, row in regras_bonus.iterrows():
 html_table += "</tbody></table>"
 
 st.markdown(html_table, unsafe_allow_html=True)
+
+
 
 
 
