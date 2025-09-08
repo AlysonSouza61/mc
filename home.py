@@ -430,7 +430,36 @@ regras_bonus = pd.DataFrame({
 })
 
 st.subheader("Regras de Bônus por SN")
-st.table(regras_bonus)
+
+# Criar HTML da tabela com cabeçalho em negrito, centralizado e com fundo colorido
+html_table = """
+<table style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color:#4CAF50; color:white;">
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Intervalo de SN</th>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Valor da Faixa (R$)</th>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Bônus Total (R$)</th>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Observação</th>
+        </tr>
+    </thead>
+    <tbody>
+"""
+
+for i, row in regras_bonus.iterrows():
+    html_table += f"""
+        <tr>
+            <td style="border: 1px solid black; text-align:center;">{row['Intervalo de SN']}</td>
+            <td style="border: 1px solid black; text-align:center;">{row['Valor da Faixa (R$)']}</td>
+            <td style="border: 1px solid black; text-align:center;">{row['Bônus Total (R$)']}</td>
+            <td style="border: 1px solid black; text-align:center;">{row['Observação']}</td>
+        </tr>
+    """
+
+html_table += "</tbody></table>"
+
+st.markdown(html_table, unsafe_allow_html=True)
+
+
 
 
 
