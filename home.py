@@ -411,9 +411,6 @@ st.plotly_chart(fig)
 
 # Tabela de Métricas
 
-import streamlit as st
-import pandas as pd
-
 # Tabela explicativa do bônus
 regras_bonus = pd.DataFrame({
     "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
@@ -430,7 +427,36 @@ regras_bonus = pd.DataFrame({
 })
 
 st.subheader("Regras de Bônus por SN")
-st.table(regras_bonus)
+
+# Criar HTML da tabela com cabeçalho em negrito e células centralizadas
+html_table = """
+<table style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Intervalo de SN</th>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Valor da Faixa (R$)</th>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Bônus Total (R$)</th>
+            <th style="border: 1px solid black; text-align:center; font-weight:bold;">Observação</th>
+        </tr>
+    </thead>
+    <tbody>
+"""
+
+for i, row in regras_bonus.iterrows():
+    html_table += f"""
+        <tr>
+            <td style="border: 1px solid black; text-align:center;">{row['Intervalo de SN']}</td>
+            <td style="border: 1px solid black; text-align:center;">{row['Valor da Faixa (R$)']}</td>
+            <td style="border: 1px solid black; text-align:center;">{row['Bônus Total (R$)']}</td>
+            <td style="border: 1px solid black; text-align:center;">{row['Observação']}</td>
+        </tr>
+    """
+
+html_table += "</tbody></table>"
+
+st.markdown(html_table, unsafe_allow_html=True)
+
+
 
 
 
