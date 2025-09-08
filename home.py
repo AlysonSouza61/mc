@@ -409,6 +409,28 @@ st.title("NPS por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
 
 
+import streamlit as st
+import pandas as pd
+
+# Tabela explicativa do bônus
+regras_bonus = pd.DataFrame({
+    "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
+    "Valor da Faixa (R$)": [0, 200, 300, 400, 500, 1000],
+    "Bônus Total (R$)": [200, 400, 500, 600, 700, 1200],
+    "Observação": [
+        "Apenas o valor fixo R$ 200",
+        "200 fixo + 200 da faixa",
+        "200 fixo + 300 da faixa",
+        "200 fixo + 400 da faixa",
+        "200 fixo + 500 da faixa",
+        "200 fixo + 1000 da faixa"
+    ]
+})
+
+st.subheader("Regras de Bônus por SN")
+st.table(regras_bonus)
+
+
 
 
 
