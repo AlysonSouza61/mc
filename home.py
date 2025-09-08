@@ -332,8 +332,8 @@ else:
 media_sn = df["SN"].mean()
 
 # Agrupar por iniciador e calcular média individual
-df_grouped_iniciado_SN = df.groupby("Iniciador")["SN"].mean().reset_index()
-df_grouped_iniciado_SN = df_grouped_iniciado_SN.sort_values(by="SN", ascending=False)
+df_grouped_iniciado_SN = df.groupby("Iniciador")["NPS"].mean().reset_index()
+df_grouped_iniciado_SN = df_grouped_iniciado_SN.sort_values(by="NPS", ascending=False)
 
 # Função para calcular o bônus de acordo com as regras
 def calcular_bonus(sn, media_sn):
@@ -407,6 +407,7 @@ fig.update_layout(
 # Exibir no Streamlit
 st.title("SN por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
+
 
 
 
