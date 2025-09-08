@@ -322,97 +322,71 @@ else:
 
     # Gráfico
 
-    df_grouped_iniciado_SN = df.groupby("Iniciador")["SN"].mean().reset_index()
-
-    df_grouped_iniciado_SN = df_grouped_iniciado_SN.sort_values(by="SN", ascending=False)
-
-    # Formatar os valores de SN
-    df_grouped_iniciado_SN['SN_formatted'] = df_grouped_iniciado_SN['SN'].apply(lambda x: f'{x:,.2f}')
-
-    # Inicializando o app Dash
-    app = dash.Dash(__name__)
-    
-    # Criando o gráfico com rótulos de dados
-    fig = px.bar(df_grouped_iniciado_SN, x='Iniciador', y='SN', title='Média do SN por Iniciador')
-
-    # Adicionando rótulos de dados no gráfico com formatação de moeda BR
-    fig.update_traces(text=df_grouped_iniciado_SN['SN_formatted'], textposition='outside')
-
-    # Configuração do Streamlit
-    # Ajustando o layout (tamanho do gráfico)
-    fig.update_layout(
-        width=1000,  # Largura do gráfico
-        height=600,  # Altura do gráfico
-        margin=dict(t=50, b=100, l=50, r=50),  # Margens para evitar corte
-    )
-    st.title("Média do SN por Iniciador")
-    st.plotly_chart(fig)
-        
-    # Exibir dataframe filtrado
-    #st.dataframe(df)
 
 
-    # =========================
+# =========================
 # NOVO GRÁFICO - BÔNUS POR INICIADOR
 # =========================
 
-    # Calcular média geral do departamento
-    #media_sn = df["SN"].mean()
-    
-    # Agrupar por iniciador e calcular média individual
-    df_grouped_iniciado_SN = df.groupby("Iniciador")["SN"].mean().reset_index()
-    df_grouped_iniciado_SN = df_grouped_iniciado_SN.sort_values(by="SN", ascending=False)
-    
-    # Função para calcular o bônus de acordo com as regras
-    def calcular_bonus(sn, media_sn):
-        if media_sn < 0.49:
-            return 0
-        else:
-            if sn < 0.49:
-                return 200
-            elif 0.49 <= sn <= 0.60:
-                return 200 + 200
-            elif 0.61 <= sn <= 0.70:
-                return 200 + 300
-            elif 0.71 <= sn <= 0.80:
-                return 200 + 400
-            elif 0.81 <= sn <= 0.90:
-                return 200 + 500
-            else:  # acima de 0.90
-                return 200 + 1000
-    
-    # Aplicar cálculo de bônus
-    df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["SN"].apply(lambda x: calcular_bonus(x, media_sn))
-    
-    # Formatar valores do bônus em moeda BR
-    df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", "."))
-    
-    # Criar gráfico de barras (SN no eixo Y, mas rótulo mostra o bônus)
-    fig = px.bar(
-        df_grouped_iniciado_SN,
-        x="Iniciador",
-        y="SN",
-        title="Média do SN por Iniciador e Bônus Correspondente"
-    )
-    
-    # Adicionar rótulos de dados (bônus)
-    fig.update_traces(
-        text=df_grouped_iniciado_SN["Bonus_formatted"],
-        textposition="outside"
-    )
-    
-    # Layout do gráfico
-    fig.update_layout(
-        width=1000,
-        height=600,
-        margin=dict(t=50, b=100, l=50, r=50),
-        yaxis=dict(title="SN Médio"),
-        xaxis=dict(title="Iniciador")
-    )
-    
-    # Exibir no Streamlit
-    st.title("SN por Iniciador com Bônus Calculado")
-    st.plotly_chart(fig)
+# Calcular média geral do departamento
+media_sn = df["SN"].mean()
+
+# Agrupar por iniciador e calcular média individual
+df_grouped_iniciado_SN = df.groupby("Iniciador")["SN"].mean().reset_index()
+df_grouped_iniciado_SN = df_grouped_iniciado_SN.sort_values(by="SN", ascending=False)
+
+# Função para calcular o bônus de acordo com as regras
+def calcular_bonus(sn, media_sn):
+    if media_sn < 0.49:
+        return 0
+    else:
+        if sn < 0.49:
+            return 200
+        elif 0.49 <= sn <= 0.60:
+            return 200 + 200
+        elif 0.61 <= sn <= 0.70:
+            return 200 + 300
+        elif 0.71 <= sn <= 0.80:
+            return 200 + 400
+        elif 0.81 <= sn <= 0.90:
+            return 200 + 500
+        else:  # acima de 0.90
+            return 200 + 1000
+
+# Aplicar cálculo de bônus
+df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["SN"].apply(lambda x: calcular_bonus(x, media_sn))
+
+# Formatar valores do bônus em moeda BR
+df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", "."))
+
+# Criar gráfico de barras (SN no eixo Y, mas rótulo mostra o bônus)
+fig = px.bar(
+    df_grouped_iniciado_SN,
+    x="Iniciador",
+    y="SN",
+    title="Média do SN por Iniciador e Bônus Correspondente"
+)
+
+# Adicionar rótulos de dados (bônus)
+fig.update_traces(
+    text=df_grouped_iniciado_SN["Bonus_formatted"],
+    textposition="outside"
+)
+
+# Layout do gráfico
+fig.update_layout(
+    width=1000,
+    height=600,
+    margin=dict(t=50, b=100, l=50, r=50),
+    yaxis=dict(title="SN Médio"),
+    xaxis=dict(title="Iniciador")
+)
+
+# Exibir no Streamlit
+st.title("SN por Iniciador com Bônus Calculado")
+st.plotly_chart(fig)
+
+
 
 
 
