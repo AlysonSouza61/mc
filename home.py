@@ -351,7 +351,7 @@ def calcular_bonus(sn, media_sn):
         elif 0.81 <= sn <= 0.90:
             return 200 + 500
         else:  # acima de 0.90
-            return 200 + 1000
+            return 200 + 600
 
 # Aplicar cálculo de bônus
 df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["NPS"].apply(lambda x: calcular_bonus(x, media_sn))
@@ -413,20 +413,21 @@ st.plotly_chart(fig)
 # Tabela explicativa do bônus
 regras_bonus = pd.DataFrame({
     "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
-    "Valor da Faixa (R$)": [0, 200, 300, 400, 500, 1000],
-    "Bônus Total (R$)": [200, 400, 500, 600, 700, 1200],
+    "Valor da Faixa (R$)": [0, 200, 300, 400, 500, 600],
+    "Bônus Total (R$)": [200, 400, 500, 600, 700, 800],
     "Observação": [
         "Apenas o valor fixo R$ 200",
         "200 fixo + 200 da faixa",
         "200 fixo + 300 da faixa",
         "200 fixo + 400 da faixa",
         "200 fixo + 500 da faixa",
-        "200 fixo + 1000 da faixa"
+        "200 fixo + 600 da faixa"
     ]
 })
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
