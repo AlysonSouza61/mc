@@ -329,7 +329,7 @@ else:
 # =========================
 
 # Calcular média geral do departamento
-media_sn = df["SN"].mean()
+media_sn = df["NPS"].mean()
 
 # Agrupar por iniciador e calcular média individual
 df_grouped_iniciado_SN = df.groupby("Iniciador")["NPS"].mean().reset_index()
@@ -427,6 +427,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
