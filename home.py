@@ -339,7 +339,7 @@ df_grouped_iniciado_SN = df_grouped_iniciado_SN.sort_values(by="NPS", ascending=
 
 # Função para calcular o bônus de acordo com as regras
 def calcular_bonus(sn, media_sn):
-    if media_sn < 0.49:
+    if media_sn < 0:
         return 0
     else:
         if sn < 0.49:
@@ -430,6 +430,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
