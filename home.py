@@ -67,7 +67,7 @@ if uploaded_file:
     # Fator 4: (df['SN'] * 0.01 + 0.99)
     # Fator 5: (df['SN'] * 0.005 + 0.995)
     # Fator 5: (df['SN'] * 0.3 + 0.7) Estava esse
-    df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.2 + 0.8)
+    df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.1 + 0.9)
     df['MC'] = 1500 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
@@ -430,6 +430,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
