@@ -360,7 +360,8 @@ df_grouped_iniciado_SN["Bonus"] = df_grouped_iniciado_SN["NPS"].apply(lambda x: 
 # Formatar valores
 df_grouped_iniciado_SN["SN_formatted"] = df_grouped_iniciado_SN["NPS"].apply(lambda x: f"<b>{x:.2f}</b>".replace(".", ","))
 df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].apply(
-    lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", ".")
+    #lambda x: f'R$ {x:,.2f}'.replace(",", "X").replace(".", ",").replace("X", ".")
+    lambda x: f'R$ {x:.2f}'.replace(",", "X").replace(".", ",").replace("X", ".")
 )
 
 # Criar gráfico de barras
@@ -379,7 +380,7 @@ fig.update_traces(
 )
 
 # Adicionar rótulos de Bônus (no centro da barra, com sombra para contraste)
-for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus"]):
+for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus_formatted"]):
     fig.add_annotation(
         x=df_grouped_iniciado_SN["Iniciador"].iloc[i],
         y=df_grouped_iniciado_SN["NPS"].iloc[i] / 2,  # centro da barra
@@ -428,6 +429,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
