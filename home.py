@@ -381,7 +381,7 @@ fig.update_traces(
 )
 
 # Adicionar rótulos de Bônus (no centro da barra, com sombra para contraste)
-for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus_formatted"]):
+for i, bonus in enumerate(df_grouped_iniciado_SN["Bonus"]):
     fig.add_annotation(
         x=df_grouped_iniciado_SN["Iniciador"].iloc[i],
         y=df_grouped_iniciado_SN["NPS"].iloc[i] / 2,  # centro da barra
@@ -430,6 +430,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
