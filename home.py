@@ -369,7 +369,7 @@ df_grouped_iniciado_SN["Bonus_formatted"] = df_grouped_iniciado_SN["Bonus"].appl
 fig = px.bar(
     df_grouped_iniciado_SN,
     x="Iniciador",
-    y="SN_formatted",
+    y="NPS",
     title="Média do NPS por Iniciador e Bônus Correspondente"
 )
 
@@ -430,6 +430,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
