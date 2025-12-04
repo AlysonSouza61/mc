@@ -51,7 +51,7 @@ if uploaded_file:
     defeitos_excluidos = ["Material De Teste", "Devolução Comercial", "Atraso na entrega", "Material Molhado", "Pedido Divergente", "Sentido De Embobinameto"]
     
     # Filtra removendo essas descrições da coluna teste
-    df = df[~df['Descrição Defeito'].fillna('').str.strip().str.lower().isin([d.lower() for d in defeitos_excluidos]) & (df['Qtde Reclamada'].fillna(0) >= 0)]
+    df = df[~df['Descrição Defeito'].fillna('').str.strip().str.lower().isin([d.lower() for d in defeitos_excluidos]) & (df['Qtde Reclamada'].fillna(0) >= 200)]
     
     # Processamento dos dados
     df['SD'] = df['Sigla Defeito'].map(df2.set_index('Desvios')['Peso']).fillna(0)
@@ -70,7 +70,7 @@ if uploaded_file:
     # Fator 5: (df['SN'] * 0.3 + 0.7) Estava esse
     #df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.3 + 0.7)
     #df['NPS'] = 1 * 1 * (df['SN'] * 0.3 + 0.7)
-    df['NPS'] = 1 * df['NCA'] * 1
+    df['NPS'] = 1 * 1 * 1
     df['MC'] = 1500 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
@@ -320,6 +320,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
