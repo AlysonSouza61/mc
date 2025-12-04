@@ -181,115 +181,6 @@ if uploaded_file:
     # grades
     
     # grades
-    
-    # Gráfico
-
- # ======================
-# NOVO GRÁFICO (MC + Progressão) — ORDEM CORRIGIDA
-# ======================
-
-def dividir_progressao(total, n):
-    a1 = 20.0  # primeiro termo fixo
-    d = (2 * total / n - 2 * a1) / (n - 1)
-    valores = [round(a1 + i * d, 2) for i in range(n)]
-    diferenca = round(total - sum(valores), 2)
-    valores[-1] += diferenca
-    return valores
-
-# Parâmetros da PA
-
-total_pa = round(soma_medias_mc * 0.2, 2)
-n_alvo = len(df_grouped_iniciado)
-#st.write("N = ", len(df_grouped_iniciado))
-#st.write("Média dos 80% = ", round(soma_medias_mc * 0.8 / n_alvo, 2))
-
-# Média de MC por Iniciador
-df_mc_iniciador = df.groupby("Iniciador")["MC"].mean().reset_index()
-
-if df_mc_iniciador.empty:
-    st.warning("Sem dados após os filtros para calcular o gráfico MC + Progressão.")
-else:
-    # Ajusta n ao número de iniciadores disponíveis
-    n = min(n_alvo, len(df_mc_iniciador))
-
-    # Gera a PA e ordena crescente (menor com menor)
-    pa_vals = dividir_progressao(total_pa, n)
-    pa_vals_sorted = sorted(pa_vals)  # crescente
-
-    # Ordena MC crescente e pega os n menores (mantém os Iniciadores correspondentes)
-    df_mc_sorted = (
-        df_mc_iniciador
-        .sort_values(by="MC", ascending=True)
-        .head(n)
-        .reset_index(drop=True)
-    )
-
-    # Soma 1–para–1: menor MC com menor PA, etc.
-    df_mc_sorted = df_mc_sorted.assign(PA=pa_vals_sorted)
-    df_mc_sorted["MC"] = df_mc_sorted["MC"] + df_mc_sorted["PA"]
-
-    # Ordena para exibição (decrescente por MC combinado)
-    df_mc_pa_plot = df_mc_sorted.sort_values(by="MC", ascending=False).reset_index(drop=True)
-
-    # Formata rótulo
-    df_mc_pa_plot["MC_formatted"] = df_mc_pa_plot["MC"].apply(lambda x: f'R${x:,.2f}')
-
-    # Gráfico (mesmas métricas do primeiro)
-    fig = px.bar(df_mc_pa_plot, x="Iniciador", y="MC", title="MC + Progressão por Iniciador")
-
-    # Rótulos de dados
-    fig.update_traces(text=df_mc_pa_plot["MC_formatted"], textposition="outside")
-
-    # Força a ordem do eixo X a seguir a ordem do DataFrame já ordenado por MC
-    fig.update_layout(
-        xaxis={"categoryorder": "array", "categoryarray": df_mc_pa_plot["Iniciador"].tolist()},
-        width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
-    )
-
-    #st.title("MC + Progressão por Iniciador")
-    #st.plotly_chart(fig)
-    
-    # Tabela com os valores combinados
-    #st.dataframe(df_mc_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
-
-    # ======================
-    # NOVO GRÁFICO (MD + PA)
-    # ======================
-    md = round(soma_medias_mc * 0.8 / n_alvo, 2)
-    #st.write(md)
-    # Cria uma cópia para não afetar o gráfico anterior
-    df_md_pa = df_mc_sorted.copy()
-
-    # Substitui MC pela soma de md + PA
-    df_md_pa["MC"] = md + df_md_pa["PA"]
-    
-    media_md_pa = df_md_pa["MC"].mean()
-    media_md_pa = f"R${media_md_pa:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    
-    # Ordena decrescente para exibição
-    df_md_pa_plot = df_md_pa.sort_values(by="MC", ascending=False).reset_index(drop=True)
-
-    # Formata rótulos
-    df_md_pa_plot["MC_formatted"] = df_md_pa_plot["MC"].apply(lambda x: f'R${x:,.2f}')
-
-    # Gráfico
-    fig2 = px.bar(df_md_pa_plot, x="Iniciador", y="MC", title="MC por Iniciador")
-
-    fig2.update_traces(text=df_md_pa_plot["MC_formatted"], textposition="outside")
-    fig2.update_layout(
-        xaxis={"categoryorder": "array", "categoryarray": df_md_pa_plot["Iniciador"].tolist()},
-        width=1000, height=600, margin=dict(t=50, b=100, l=50, r=50),
-    )
-
-    #st.title("MC por Iniciador")
-    #st.plotly_chart(fig2)
-
-    # Exibe a tabela com os valores do novo gráfico
-    #st.title("Tabela: Iniciador / PA / MC")
-    #st.dataframe(df_md_pa_plot[["Iniciador", "PA", "MC", "MC_formatted"]])
-
-    # st.write("Média = ", round(media_md_pa, 2))
-
 
     # Grades
 
@@ -433,6 +324,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
