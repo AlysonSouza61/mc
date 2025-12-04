@@ -51,7 +51,7 @@ if uploaded_file:
     defeitos_excluidos = ["Material De Teste", "Devolução Comercial", "Atraso na entrega", "Material Molhado", "Pedido Divergente", "Sentido De Embobinameto"]
     
     # Filtra removendo essas descrições da coluna teste
-    df = df[~df['Descrição Defeito'].fillna('').str.strip().str.lower().isin([d.lower() for d in defeitos_excluidos]) & (df['Qtde Reclamada'].fillna(0) >= 200)]
+    df = df[~df['Descrição Defeito'].fillna('').str.strip().str.lower().isin([d.lower() for d in defeitos_excluidos]) & (df['Qtde Reclamada'].fillna(0) >= 0)]
     
     # Processamento dos dados
     df['SD'] = df['Sigla Defeito'].map(df2.set_index('Desvios')['Peso']).fillna(0)
@@ -433,6 +433,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
