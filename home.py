@@ -156,11 +156,7 @@ if uploaded_file:
 
 
 
-    # Card
-    # Calcular as médias
-    media_sn = df["SN"].mean()
-    media_nps = df["NPS"].mean()
-    media_mc = df["MC"].mean()
+    
     
     
 
@@ -433,6 +429,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
