@@ -178,10 +178,6 @@ if uploaded_file:
     PA_20 = f"R${soma_medias_mc * 0.2:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     teste = f"R${soma_medias_mc * 0.8:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-    # grades
-    
-    # grades
-
     # Grades
 
     ####
@@ -224,7 +220,7 @@ if uploaded_file:
 
 # Calcular média geral do departamento
 #media_sn = round(df["NPS"].mean(), 2)
-media_sn = df["SN"].mean()
+media_sn = df["NPS"].mean()
 #media_nps = df["NPS"].mean()
 
 # Agrupar por iniciador e calcular média individual
@@ -324,6 +320,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
