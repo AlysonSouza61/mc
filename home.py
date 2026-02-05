@@ -233,7 +233,7 @@ def calcular_bonus(sn, media_sn):
         if sn < 0.49:
             return 0
         elif 0.49 <= sn <= 0.60:
-            return 300
+            return 300 + 200
         elif 0.61 <= sn <= 0.70:
             return 400
         elif 0.71 <= sn <= 0.80:
@@ -318,6 +318,7 @@ regras_bonus = pd.DataFrame({
 
 st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
 st.table(regras_bonus)
+
 
 
 
