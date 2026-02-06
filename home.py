@@ -301,23 +301,8 @@ st.plotly_chart(fig)
 
 
 
-# Tabela explicativa do bônus
-regras_bonus = pd.DataFrame({
-    "Intervalo de SN": ["< 0,49", "0,49 – 0,60", "0,61 – 0,70", "0,71 – 0,80", "0,81 – 0,90", "> 0,90"],
-    "Valor da Faixa (R$)": [0, 200, 300, 400, 500, 600],
-    "Bônus Total (R$)": [200, 400, 500, 600, 700, 800],
-    "Observação": [
-        "Apenas o valor fixo R$ 200",
-        "200 fixo + 200 da faixa",
-        "200 fixo + 300 da faixa",
-        "200 fixo + 400 da faixa",
-        "200 fixo + 500 da faixa",
-        "200 fixo + 600 da faixa"
-    ]
-})
 
-st.subheader("Critérios de Bônus por SPS (válidas se a Média do Departamento ≥ 0,49)")
-st.table(regras_bonus)
+
 
 
 
