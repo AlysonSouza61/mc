@@ -301,7 +301,8 @@ st.plotly_chart(fig)
 
 # Exibe a tabela com os valores do novo gráfico
 #st.title("Tabela: Iniciador / PA / MC")
-st.dataframe(df[])
+st.dataframe(df)
+
 
 
 
