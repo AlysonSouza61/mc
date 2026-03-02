@@ -299,6 +299,10 @@ fig.update_layout(
 st.title("NPS por Iniciador com Bônus Calculado")
 st.plotly_chart(fig)
 
+# Exibe a tabela com os valores do novo gráfico
+#st.title("Tabela: Iniciador / PA / MC")
+st.dataframe(df[])
+
 
 
 
