@@ -68,7 +68,7 @@ if uploaded_file:
     # Fator 5: (df['SN'] * 0.005 + 0.995)
     # Fator 5: (df['SN'] * 0.001 + 0.999)
     # Fator 5: (df['SN'] * 0.3 + 0.7) Estava esse
-    df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.8 + 0.2)
+    df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.7 + 0.3)
     df['MC'] = 1500 * df['NPS']
     df['Mês'] = pd.to_datetime(df['Data Corte']).dt.strftime('%B')
     #df['Ano'] = pd.to_datetime(df['Data Corte']).dt.year
@@ -303,6 +303,7 @@ st.plotly_chart(fig)
 #st.title("Tabela: Iniciador / PA / MC")
 #st.dataframe(df[['coluna1', 'coluna2']])
 st.dataframe(df)
+
 
 
 
