@@ -6,6 +6,7 @@ from io import BytesIO
 from datetime import datetime
 import dash
 from dash import dcc, html
+from io import BytesIO
 
 # Configuração da página
 st.set_page_config(
@@ -304,6 +305,23 @@ st.plotly_chart(fig)
 #st.dataframe(df[['coluna1', 'coluna2']])
 st.dataframe(df)
 
+# função para converter para excel
+def to_excel(df):
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Dados')
+    processed_data = output.getvalue()
+    return processed_data
+
+excel_file = to_excel(df)
+
+# botão de download
+st.download_button(
+    label="📥 Baixar em Excel",
+    data=excel_file,
+    file_name="dados.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
 
 
 
