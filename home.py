@@ -308,16 +308,14 @@ st.dataframe(df)
 # função para converter para excel
 def to_excel(df):
     output = BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+    with pd.ExcelWriter(output) as writer:
         df.to_excel(writer, index=False, sheet_name='Dados')
-    processed_data = output.getvalue()
-    return processed_data
+    return output.getvalue()
 
 excel_file = to_excel(df)
 
-# botão de download
 st.download_button(
-    label="📥 Baixar em Excel",
+    label="📥 Baixar Excel",
     data=excel_file,
     file_name="dados.xlsx",
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
