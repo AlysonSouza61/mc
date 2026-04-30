@@ -60,7 +60,7 @@ if uploaded_file:
     df[['Qtde Devolvida', 'Qtde Reclamada']] = df[['Qtde Devolvida', 'Qtde Reclamada']].fillna(0)
     df['SN'] = df.apply(lambda row: 0 if row['Qtde Devolvida'] >= row['Qtde Reclamada'] or (row['Qtde Devolvida'] == 0 and row['Qtde Reclamada'] == 0)
                         else 1 if row['Qtde Devolvida'] == 0
-                        else row['Qtde Devolvida'] / row['Qtde Reclamada'] if row['Qtde Reclamada'] != 0
+                        else 1 - (row['Qtde Devolvida'] / row['Qtde Reclamada']) if row['Qtde Reclamada'] != 0
                         else 0, axis=1)
     # Fator 1: (df['SN'] * 0.1 + 0.9)
     # Fator 2: (df['SN'] * 0.2 + 0.8)
