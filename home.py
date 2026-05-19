@@ -72,7 +72,7 @@ if uploaded_file:
     # Fator 6: (df['SN'] * 0.75 + 0.25)
 
     # Zera SD e NCA quando SN for 0
-    # df.loc[df['SN'] == 0, ['SD', 'NCA']] = 0
+    df.loc[df['SN'] == 0, ['SD', 'NCA']] = 0
 
     df['NPS'] = df['SD'] * df['NCA'] * (df['SN'] * 0.75 + 0.25)
     df['MC'] = 1500 * df['NPS']
