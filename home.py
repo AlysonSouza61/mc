@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.express as px
 import mysql.connector
 from io import BytesIO
-from datetime import date
 
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -214,24 +213,6 @@ if uploaded_file:
 
         st.sidebar.header("Filtros")
 
-       st.sidebar.markdown(
-        """
-        <hr>
-        <div style="
-            font-size: 12px;
-            color: gray;
-            margin-top: 30px;
-        ">
-    
-            <p>Departamento: Assistência Técnica</p>
-            <p>Desenvolvedor: Alyson Anapaz</p>
-            <p>Versão do Software: 3.0</p>
-    
-        </div>
-        """,
-        unsafe_allow_html=True
-)
-
         # =====================================================
         # FILTRO CLIENTE
         # =====================================================
@@ -271,7 +252,7 @@ if uploaded_file:
         )
 
         # =====================================================
-        # BLOCO REFEITO - FILTRO DE DATA
+        # FILTRO DE DATA
         # =====================================================
 
         st.sidebar.subheader(
@@ -291,13 +272,13 @@ if uploaded_file:
             .date()
         )
 
-        # Widget
+        # Widget de período
         periodo = st.sidebar.date_input(
             "Selecione o período:",
             value=(data_min, data_max)
         )
 
-        # Garantir retorno válido
+        # Garantir duas datas
         if len(periodo) != 2:
 
             st.warning(
@@ -307,6 +288,29 @@ if uploaded_file:
             st.stop()
 
         data_inicio, data_fim = periodo
+
+        # =====================================================
+        # TEXTO SIDEBAR
+        # =====================================================
+
+        st.sidebar.markdown(
+            """
+            <hr>
+
+            <div style="
+                font-size: 12px;
+                color: gray;
+                margin-top: 30px;
+            ">
+
+                <p>Departamento: Assistência Técnica</p>
+                <p>Desenvolvedor: Alyson Anapaz</p>
+                <p>Versão do Software: 3.0</p>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         # =====================================================
         # APLICAÇÃO DOS FILTROS
