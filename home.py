@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -582,4 +581,3 @@ if uploaded_file:
 else:
 
     st.info("Faça upload de um arquivo para iniciar.")
-```
