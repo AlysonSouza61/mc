@@ -295,22 +295,14 @@ if uploaded_file:
 
         st.sidebar.markdown(
             """
-            <hr>
-
-            <div style="
-                font-size: 12px;
-                color: gray;
-                margin-top: 30px;
-            ">
-
+            <div style="position: fixed; bottom: 9px; width: 100%; text-align: left; font-size: 12px; color: gray;">
                 <p>Departamento: Assistência Técnica</p>
                 <p>Desenvolvedor: Alyson Anapaz</p>
                 <p>Versão do Software: 3.0</p>
-
             </div>
             """,
             unsafe_allow_html=True
-        )
+    )
 
         # =====================================================
         # APLICAÇÃO DOS FILTROS
