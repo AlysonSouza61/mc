@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import mysql.connector
 from io import BytesIO
-from datetime import date, timedelta
+from datetime import date
 
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -23,6 +23,7 @@ st.markdown("---")
 # =========================================================
 
 def get_mysql_data(query):
+
     conexao = mysql.connector.connect(
         host='162.241.103.245',
         user='datatech_zara',
@@ -31,7 +32,9 @@ def get_mysql_data(query):
     )
 
     cursor = conexao.cursor()
+
     cursor.execute(query)
+
     resultado = cursor.fetchall()
 
     cursor.close()
@@ -39,9 +42,8 @@ def get_mysql_data(query):
 
     return resultado
 
-
 # =========================================================
-# BUSCAR DADOS AUXILIARES
+# DADOS AUXILIARES
 # =========================================================
 
 tecnico = pd.DataFrame(
@@ -74,98 +76,108 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
 
-    # =====================================================
-    # LEITURA DO ARQUIVO
-    # =====================================================
-
-    file_extension = uploaded_file.name.split(".")[-1]
-
     try:
 
+        # =====================================================
+        # LEITURA DO ARQUIVO
+        # =====================================================
+
+        file_extension = uploaded_file.name.split(".")[-1]
+
         if file_extension == "csv":
+
             df = pd.read_csv(uploaded_file)
 
         else:
+
             df = pd.read_excel(
                 uploaded_file,
                 sheet_name='Dados Gerais RAC - Atualizado'
             )
 
-    except Exception as e:
-        st.error(f"Erro ao ler arquivo: {e}")
-        st.stop()
+        # =====================================================
+        # FILTRO DE DEFEITOS
+        # =====================================================
 
-    # =====================================================
-    # FILTRO DE DEFEITOS
-    # =====================================================
+        defeitos_excluidos = [
+            "Material De Teste",
+            "Devolução Comercial",
+            "Atraso na entrega",
+            "Material Molhado",
+            "Pedido Divergente",
+            "Sentido De Embobinameto",
+            "Laudo Divergente",
+            "Especificação Divergente"
+        ]
 
-    defeitos_excluidos = [
-        "Material De Teste",
-        "Devolução Comercial",
-        "Atraso na entrega",
-        "Material Molhado",
-        "Pedido Divergente",
-        "Sentido De Embobinameto",
-        "Laudo Divergente",
-        "Especificação Divergente"
-    ]
+        df = df[
+            ~df['Descrição Defeito']
+            .fillna('')
+            .str.strip()
+            .str.lower()
+            .isin([d.lower() for d in defeitos_excluidos])
 
-    df = df[
-        ~df['Descrição Defeito']
-        .fillna('')
-        .str.strip()
-        .str.lower()
-        .isin([d.lower() for d in defeitos_excluidos])
+            &
 
-        &
+            (df['Qtde Reclamada'].fillna(0) >= 100)
+        ]
 
-        (df['Qtde Reclamada'].fillna(0) >= 100)
-    ]
+        # =====================================================
+        # CONVERSÃO DE DATAS
+        # =====================================================
 
-    # =====================================================
-    # CONVERSÃO DE DATAS
-    # =====================================================
+        df['Data de Abertura'] = pd.to_datetime(
+            df['Data de Abertura'],
+            errors='coerce',
+            dayfirst=True
+        )
 
-    df['Data de Abertura'] = pd.to_datetime(
-        df['Data de Abertura'],
-        errors='coerce'
-    )
+        df['Data Corte'] = pd.to_datetime(
+            df['Data Corte'],
+            errors='coerce',
+            dayfirst=True
+        )
 
-    df['Data Corte'] = pd.to_datetime(
-        df['Data Corte'],
-        errors='coerce'
-    )
+        # Remove datas inválidas
+        df = df.dropna(subset=['Data de Abertura'])
 
-    df = df.dropna(subset=['Data de Abertura'])
+        # Verifica dataframe vazio
+        if df.empty:
 
-    # =====================================================
-    # CÁLCULOS
-    # =====================================================
+            st.error(
+                "Não existem datas válidas na coluna 'Data de Abertura'"
+            )
 
-    df['SD'] = df['Sigla Defeito'].map(
-        df2.set_index('Desvios')['Peso']
-    ).fillna(0)
+            st.stop()
 
-    df['NCA'] = df['Cliente'].map(
-        df3.set_index('Cliente')['Peso']
-    ).fillna(0)
+        # =====================================================
+        # CÁLCULOS
+        # =====================================================
 
-    df[['Qtde Devolvida', 'Qtde Reclamada']] = (
-        df[['Qtde Devolvida', 'Qtde Reclamada']]
-        .fillna(0)
-    )
+        df['SD'] = df['Sigla Defeito'].map(
+            df2.set_index('Desvios')['Peso']
+        ).fillna(0)
 
-    df['SN'] = df.apply(
-        lambda row: (
-            0
-            if row['Qtde Devolvida'] >= row['Qtde Reclamada']
-            or (
+        df['NCA'] = df['Cliente'].map(
+            df3.set_index('Cliente')['Peso']
+        ).fillna(0)
+
+        df[['Qtde Devolvida', 'Qtde Reclamada']] = (
+            df[['Qtde Devolvida', 'Qtde Reclamada']]
+            .fillna(0)
+        )
+
+        df['SN'] = df.apply(
+            lambda row:
+            0 if (
+                row['Qtde Devolvida']
+                >= row['Qtde Reclamada']
+            ) or (
                 row['Qtde Devolvida'] == 0
                 and row['Qtde Reclamada'] == 0
             )
 
-            else 1
-            if row['Qtde Devolvida'] == 0
+            else 1 if row['Qtde Devolvida'] == 0
 
             else 1 - (
                 row['Qtde Devolvida']
@@ -173,268 +185,230 @@ if uploaded_file:
             )
 
             if row['Qtde Reclamada'] != 0
-            else 0
-        ),
-        axis=1
-    )
+            else 0,
 
-    # Zera SD e NCA quando SN for 0
-    df.loc[df['SN'] == 0, ['SD', 'NCA']] = 0
+            axis=1
+        )
 
-    # NPS
-    df['NPS'] = (
-        df['SD']
-        * df['NCA']
-        * (df['SN'] * 0.75 + 0.25)
-    )
+        # Zera SD e NCA quando SN = 0
+        df.loc[df['SN'] == 0, ['SD', 'NCA']] = 0
 
-    # MC
-    df['MC'] = 1500 * df['NPS']
+        # NPS
+        df['NPS'] = (
+            df['SD']
+            * df['NCA']
+            * (df['SN'] * 0.75 + 0.25)
+        )
 
-    # Mês
-    df['Mês'] = df['Data Corte'].dt.strftime('%B')
+        # MC
+        df['MC'] = 1500 * df['NPS']
 
-    # =====================================================
-    # SIDEBAR
-    # =====================================================
+        # Mês
+        df['Mês'] = df['Data Corte'].dt.strftime('%B')
 
-    st.sidebar.image("logo.png")
+        # =====================================================
+        # SIDEBAR
+        # =====================================================
 
-    st.sidebar.header("Filtros")
+        st.sidebar.image("logo.png")
 
-    st.sidebar.markdown(
-        """
-        <div style="position: fixed;
-                    bottom: 9px;
-                    width: 100%;
-                    text-align: left;
-                    font-size: 12px;
-                    color: gray;">
+        st.sidebar.header("Filtros")
 
-            <p>Departamento: Assistência Técnica</p>
-            <p>Desenvolvedor: Alyson Anapaz</p>
-            <p>Versão do Software: 3.0</p>
+        st.sidebar.markdown(
+            """
+            <div style="position: fixed;
+                        bottom: 9px;
+                        width: 100%;
+                        text-align: left;
+                        font-size: 12px;
+                        color: gray;">
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+                <p>Departamento: Assistência Técnica</p>
+                <p>Desenvolvedor: Alyson Anapaz</p>
+                <p>Versão do Software: 3.0</p>
 
-    # =====================================================
-    # FILTRO CLIENTE
-    # =====================================================
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-    clientes_selecionados = st.sidebar.multiselect(
-        "Cliente",
-        options=["Todos"] + sorted(
-            df['Cliente'].dropna().unique().tolist()
-        ),
-        default=["Todos"]
-    )
+        # =====================================================
+        # FILTRO CLIENTE
+        # =====================================================
 
-    # =====================================================
-    # FILTRO TÉCNICOS
-    # =====================================================
+        clientes_selecionados = st.sidebar.multiselect(
+            "Cliente",
+            options=["Todos"] + sorted(
+                df['Cliente'].dropna().unique().tolist()
+            ),
+            default=["Todos"]
+        )
 
-    tecnicos_excluidos = [
-        "LARISSA PASQUOTO RODRIGUES",
-        "LAIRA ROBERTA SOUZA LOPES",
-        "EDUARDO DO VALE DE OLIVEIRA"
-    ]
+        # =====================================================
+        # FILTRO TÉCNICOS
+        # =====================================================
 
-    tecnicos_disponiveis = sorted(
-        df['Iniciador'].dropna().unique().tolist()
-    )
+        tecnicos_excluidos = [
+            "LARISSA PASQUOTO RODRIGUES",
+            "LAIRA ROBERTA SOUZA LOPES",
+            "EDUARDO DO VALE DE OLIVEIRA"
+        ]
 
-    tecnicos_selecionados_default = [
-        nome
-        for nome in tecnicos_disponiveis
-        if nome not in tecnicos_excluidos
-    ]
+        tecnicos_disponiveis = sorted(
+            df['Iniciador'].dropna().unique().tolist()
+        )
 
-    tecnicos_selecionados = st.sidebar.multiselect(
-        "Nome do Técnico",
-        options=tecnicos_disponiveis,
-        default=tecnicos_selecionados_default
-    )
+        tecnicos_default = [
+            nome
+            for nome in tecnicos_disponiveis
+            if nome not in tecnicos_excluidos
+        ]
 
-    # =====================================================
-    # FILTRO PERÍODO
-    # =====================================================
+        tecnicos_selecionados = st.sidebar.multiselect(
+            "Nome do Técnico",
+            options=tecnicos_disponiveis,
+            default=tecnicos_default
+        )
 
-    st.sidebar.subheader(
-        "Filtrar por Período (Data de Abertura)"
-    )
+        # =====================================================
+        # BLOCO REFEITO - FILTRO DE DATA
+        # =====================================================
 
-    # Se dataframe vazio
-    if df.empty:
+        st.sidebar.subheader(
+            "Filtrar por Período (Data de Abertura)"
+        )
 
-        hoje = date.today()
+        # Datas mínimas e máximas
+        data_min = (
+            df['Data de Abertura']
+            .min()
+            .date()
+        )
 
-        data_min = hoje
-        data_max = hoje
+        data_max = (
+            df['Data de Abertura']
+            .max()
+            .date()
+        )
 
-        primeiro_dia_mes = hoje.replace(day=1)
-        ultimo_dia_mes = hoje
+        # Widget
+        periodo = st.sidebar.date_input(
+            "Selecione o período:",
+            value=(data_min, data_max)
+        )
 
-    else:
+        # Garantir retorno válido
+        if len(periodo) != 2:
 
-        data_min = df['Data de Abertura'].min().date()
-        data_max = df['Data de Abertura'].max().date()
-
-        hoje = date.today()
-
-        primeiro_dia_mes = hoje.replace(day=1)
-
-        if (
-            hoje.month == data_max.month
-            and hoje.year == data_max.year
-        ):
-
-            ultimo_dia_mes = data_max
-
-        else:
-
-            proximo_mes = (
-                primeiro_dia_mes.replace(day=28)
-                + timedelta(days=4)
-            ).replace(day=1)
-
-            ultimo_dia_mes = (
-                proximo_mes - timedelta(days=1)
+            st.warning(
+                "Selecione uma data inicial e final."
             )
 
-    # DATE INPUT
-    data_inicio, data_fim = st.sidebar.date_input(
-        "Selecione o período:",
-        value=(primeiro_dia_mes, ultimo_dia_mes),
-        min_value=data_min,
-        max_value=data_max
-    )
+            st.stop()
 
-    # =====================================================
-    # APLICAÇÃO DOS FILTROS
-    # =====================================================
+        data_inicio, data_fim = periodo
 
-    if "Todos" not in clientes_selecionados:
+        # =====================================================
+        # APLICAÇÃO DOS FILTROS
+        # =====================================================
 
+        if "Todos" not in clientes_selecionados:
+
+            df = df[
+                df['Cliente']
+                .isin(clientes_selecionados)
+            ]
+
+        if "Todos" not in tecnicos_selecionados:
+
+            df = df[
+                df['Iniciador']
+                .isin(tecnicos_selecionados)
+            ]
+
+        # Filtro por data
         df = df[
-            df['Cliente']
-            .isin(clientes_selecionados)
+            (
+                df['Data de Abertura']
+                >= pd.to_datetime(data_inicio)
+            )
+
+            &
+
+            (
+                df['Data de Abertura']
+                <= pd.to_datetime(data_fim)
+            )
         ]
 
-    if "Todos" not in tecnicos_selecionados:
+        # =====================================================
+        # MÉTRICAS
+        # =====================================================
 
-        df = df[
-            df['Iniciador']
-            .isin(tecnicos_selecionados)
-        ]
+        media_sn = df["SN"].mean()
+        media_nps = df["NPS"].mean()
 
-    df = df[
-        (
-            df['Data de Abertura']
-            >= pd.to_datetime(data_inicio)
+        df_grouped_iniciado = (
+            df.groupby("Iniciador")["MC"]
+            .mean()
+            .reset_index()
         )
 
-        &
+        # =====================================================
+        # CARDS
+        # =====================================================
 
-        (
-            df['Data de Abertura']
-            <= pd.to_datetime(data_fim)
-        )
-    ]
+        st.title("Dashboard de Métricas")
 
-    # =====================================================
-    # MÉTRICAS
-    # =====================================================
+        col1, col2, col3 = st.columns(3)
 
-    media_sn = df["SN"].mean()
-    media_nps = df["NPS"].mean()
-    media_mc = df["MC"].mean()
+        with col1:
 
-    df_grouped_iniciado = (
-        df.groupby("Iniciador")["MC"]
-        .mean()
-        .reset_index()
-    )
+            st.metric(
+                label="Média SN",
+                value=f"{media_sn:.2f}"
+            )
 
-    soma_medias_mc = (
-        df_grouped_iniciado["MC"].sum()
-    )
+        with col2:
 
-    # FORMATAÇÃO
-    media_sn = f"{media_sn:.2f}"
+            st.metric(
+                label="Média NPS",
+                value=f"{media_nps:.2f}"
+            )
 
-    media_nps = f"{media_nps:.2f}"
+        with col3:
 
-    media_mc = (
-        f"R${media_mc:,.2f}"
-        .replace(",", "X")
-        .replace(".", ",")
-        .replace("X", ".")
-    )
+            st.metric(
+                "N (Número de técnicos)",
+                len(df_grouped_iniciado)
+            )
 
-    soma_medias_mc_formatado = (
-        f"R${soma_medias_mc:,.2f}"
-        .replace(",", "X")
-        .replace(".", ",")
-        .replace("X", ".")
-    )
+        # =====================================================
+        # GRÁFICO
+        # =====================================================
 
-    # =====================================================
-    # CARDS
-    # =====================================================
+        media_nps_geral = df["NPS"].mean()
 
-    st.title("Dashboard de Métricas")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric(
-            label="Média SN",
-            value=media_sn
+        df_grouped = (
+            df.groupby("Iniciador")["NPS"]
+            .mean()
+            .round(2)
+            .reset_index()
         )
 
-    with col2:
-        st.metric(
-            label="Média NPS",
-            value=media_nps
+        df_grouped = df_grouped.sort_values(
+            by="NPS",
+            ascending=False
         )
 
-    with col3:
-        st.metric(
-            "N (Número de técnicos)",
-            len(df_grouped_iniciado)
-        )
+        # =====================================================
+        # FUNÇÃO BÔNUS
+        # =====================================================
 
-    # =====================================================
-    # GRÁFICO
-    # =====================================================
+        def calcular_bonus(sn, media_nps):
 
-    media_sn_geral = df["NPS"].mean()
-
-    df_grouped_iniciado_SN = (
-        df.groupby("Iniciador")["NPS"]
-        .mean()
-        .round(2)
-        .reset_index()
-    )
-
-    df_grouped_iniciado_SN = (
-        df_grouped_iniciado_SN
-        .sort_values(by="NPS", ascending=False)
-    )
-
-    # =====================================================
-    # FUNÇÃO BÔNUS
-    # =====================================================
-
-    def calcular_bonus(sn, media_sn):
-
-        if media_sn < 0.49:
-            return 0
-
-        else:
+            if media_nps < 0.49:
+                return 0
 
             if sn < 0.49:
                 return 200
@@ -454,130 +428,103 @@ if uploaded_file:
             else:
                 return 600
 
-    # =====================================================
-    # APLICAR BÔNUS
-    # =====================================================
-
-    df_grouped_iniciado_SN["Bonus"] = (
-        df_grouped_iniciado_SN["NPS"]
-        .apply(lambda x: calcular_bonus(x, media_sn_geral))
-    )
-
-    # =====================================================
-    # FORMATAR
-    # =====================================================
-
-    df_grouped_iniciado_SN["SN_formatted"] = (
-        df_grouped_iniciado_SN["NPS"]
-        .apply(lambda x: f"<b>{x:.2f}</b>".replace(".", ","))
-    )
-
-    df_grouped_iniciado_SN["Bonus_formatted"] = (
-        df_grouped_iniciado_SN["Bonus"]
-        .apply(lambda x: f'R$ {x:.2f}'.replace(".", ","))
-    )
-
-    # =====================================================
-    # GRÁFICO
-    # =====================================================
-
-    fig = px.bar(
-        df_grouped_iniciado_SN,
-        x="Iniciador",
-        y="NPS",
-        title="Média do NPS por Iniciador e Bônus Correspondente"
-    )
-
-    fig.update_traces(
-        text=df_grouped_iniciado_SN["SN_formatted"],
-        textposition="outside",
-        textfont=dict(
-            size=12,
-            color="black"
-        )
-    )
-
-    # ANOTAÇÕES
-    for i, bonus in enumerate(
-        df_grouped_iniciado_SN["Bonus_formatted"]
-    ):
-
-        fig.add_annotation(
-            x=df_grouped_iniciado_SN["Iniciador"].iloc[i],
-            y=df_grouped_iniciado_SN["NPS"].iloc[i] / 2,
-            text=bonus,
-            showarrow=False,
-            font=dict(
-                size=13,
-                color="white",
-                family="Arial Black"
-            ),
-            align="center",
-            xanchor="center",
-            yanchor="middle",
-            bgcolor="rgba(0,0,0,0.6)",
-            borderpad=4,
-            bordercolor="black",
-            borderwidth=1,
-            opacity=0.9
+        # Aplicar bônus
+        df_grouped["Bonus"] = df_grouped["NPS"].apply(
+            lambda x: calcular_bonus(x, media_nps_geral)
         )
 
-    fig.update_layout(
-        width=1000,
-        height=600,
-        margin=dict(
-            t=50,
-            b=100,
-            l=50,
-            r=50
-        ),
-        yaxis=dict(title="NPS Médio"),
-        xaxis=dict(title="Iniciador")
-    )
+        # Texto formatado
+        df_grouped["SN_text"] = df_grouped["NPS"].apply(
+            lambda x: f"{x:.2f}".replace(".", ",")
+        )
 
-    # =====================================================
-    # EXIBIR
-    # =====================================================
+        df_grouped["Bonus_text"] = df_grouped["Bonus"].apply(
+            lambda x: f"R$ {x:.2f}".replace(".", ",")
+        )
 
-    st.title("NPS por Iniciador com Bônus Calculado")
+        # =====================================================
+        # GRÁFICO PLOTLY
+        # =====================================================
 
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
+        fig = px.bar(
+            df_grouped,
+            x="Iniciador",
+            y="NPS",
+            title="Média do NPS por Iniciador"
+        )
 
-    st.dataframe(df)
+        fig.update_traces(
+            text=df_grouped["SN_text"],
+            textposition="outside"
+        )
 
-    # =====================================================
-    # EXPORTAR EXCEL
-    # =====================================================
+        # Anotações bônus
+        for i, bonus in enumerate(df_grouped["Bonus_text"]):
 
-    def to_excel(df):
-
-        output = BytesIO()
-
-        with pd.ExcelWriter(output) as writer:
-            df.to_excel(
-                writer,
-                index=False,
-                sheet_name='Dados'
+            fig.add_annotation(
+                x=df_grouped["Iniciador"].iloc[i],
+                y=df_grouped["NPS"].iloc[i] / 2,
+                text=bonus,
+                showarrow=False,
+                font=dict(
+                    size=13,
+                    color="white"
+                ),
+                bgcolor="rgba(0,0,0,0.6)"
             )
 
-        return output.getvalue()
+        fig.update_layout(
+            height=600
+        )
 
-    excel_file = to_excel(df)
+        # =====================================================
+        # EXIBIR
+        # =====================================================
 
-    st.download_button(
-        label="📥 Baixar Excel",
-        data=excel_file,
-        file_name="dados.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
+
+        st.dataframe(df)
+
+        # =====================================================
+        # EXPORTAR EXCEL
+        # =====================================================
+
+        def to_excel(df):
+
+            output = BytesIO()
+
+            with pd.ExcelWriter(output) as writer:
+
+                df.to_excel(
+                    writer,
+                    index=False,
+                    sheet_name='Dados'
+                )
+
+            return output.getvalue()
+
+        excel_file = to_excel(df)
+
+        st.download_button(
+            label="📥 Baixar Excel",
+            data=excel_file,
+            file_name="dados.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+    except Exception as e:
+
+        st.error(f"Erro: {e}")
 
 # =========================================================
-# CASO NÃO TENHA ARQUIVO
+# SEM ARQUIVO
 # =========================================================
 
 else:
 
-    st.info("Faça upload de um arquivo para iniciar.")
+    st.info(
+        "Faça upload de um arquivo para iniciar."
+    )
